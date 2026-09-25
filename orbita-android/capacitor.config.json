@@ -1,0 +1,8 @@
+{
+  "appId": "com.orbita.bank",
+  "appName": "Órbita",
+  "webDir": "www",
+  "android": {
+    "backgroundColor": "#1d2d3d"
+  }
+}

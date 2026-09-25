@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/industry-af441e15-db92-408f-b9b0-bca11ecc5e5a/styles.css">
+<script src="_ds/industry-af441e15-db92-408f-b9b0-bca11ecc5e5a/_ds_bundle.js"></script>
+<script src="vendor/d3.min.js"></script>
+<script src="vendor/topojson-client.min.js"></script>
+<script src="vendor/land-110m.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1d2d3d">
+<style>
+body{margin:0;background:var(--color-bg)}
+a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
+button{font:inherit;color:inherit}
+.btn{border-radius:14px}.btn-icon{border-radius:50%}.input{border-radius:12px}.seg{border-radius:12px}.seg-opt:first-child{border-radius:11px 0 0 11px}.seg-opt:last-child{border-radius:0 11px 11px 0}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeOut{from{opacity:1}to{opacity:0}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
+@keyframes sheetDown{from{transform:none}to{transform:translateY(100%)}}
+@keyframes shakeA{0%,100%{transform:none}20%{transform:translateX(-10px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(3px)}}
+@keyframes shakeB{0%,100%{transform:none}20%{transform:translateX(-10px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(3px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--color-accent) 70%,transparent)}100%{box-shadow:0 0 0 9px transparent}}
+@keyframes marquee{to{transform:translateX(-50%)}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes pop{0%{transform:scale(.6)}60%{transform:scale(1.14)}100%{transform:scale(1)}}
+@keyframes scan{0%{transform:translateY(-120%)}100%{transform:translateY(1400%)}}
+@keyframes toastIn{from{opacity:0;transform:translateY(-18px)}to{opacity:1;transform:none}}
+@keyframes lockDrop{0%{transform:translateY(-6px)}55%{transform:translateY(1.5px)}100%{transform:none}}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes blink{50%{opacity:0}}
+@keyframes frame{from{opacity:0;transform:scale(1.3)}to{opacity:1;transform:none}}
+@keyframes letter{from{opacity:0;transform:translateY(40%)}to{opacity:1;transform:none}}
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:56px;padding:{{ pagePad }};background-color:var(--color-bg);background-image:linear-gradient(color-mix(in srgb,var(--color-text) 6%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--color-text) 6%,transparent) 1px,transparent 1px);background-size:34px 34px">
+
+<sc-if value="{{ desk }}" hint-placeholder-val="{{ true }}"><aside style="max-width:300px;display:flex;flex-direction:column;gap:20px">
+  <div style="display:flex;align-items:center;gap:14px;color:var(--color-accent-800)">
+    <div style="position:relative;width:44px;height:44px;flex:none">
+      <div style="position:absolute;inset:0;border:1px solid currentColor;border-radius:50%"></div>
+      <div style="position:absolute;inset:13px;background:currentColor;border-radius:50%"></div>
+      <div style="position:absolute;inset:-5px;animation:spin 4s linear infinite"><div style="position:absolute;top:0;left:50%;width:7px;height:7px;margin-left:-3.5px;background:currentColor"></div></div>
+    </div>
+    <div style="font-family:var(--font-heading);font-weight:600;font-size:40px;letter-spacing:.06em;line-height:1">ÓRBITA</div>
+  </div>
+  <p style="margin:0;font-size:15px;color:var(--color-neutral-800);text-wrap:pretty">Protótipo interativo de banco digital: contas, depósito, saque com PIN, bloqueio de segurança, bolsa global ao vivo e painel do gerente.</p>
+  <div class="blueprint" style="padding:16px;display:flex;flex-direction:column;gap:10px">
+    <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+    <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent-700)">Contas de demonstração</div>
+    <div style="display:grid;grid-template-columns:1fr auto;gap:6px 16px;font-size:13px">
+      <span>ana@orbita.com</span><span style="font-variant-numeric:tabular-nums">PIN 1234</span>
+      <span>bruno@orbita.com</span><span style="font-variant-numeric:tabular-nums">PIN 4321</span>
+      <span>carla@orbita.com <span style="color:var(--color-neutral-600)">· bloqueada</span></span><span style="font-variant-numeric:tabular-nums">PIN 1111</span>
+      <span>Código do gerente</span><span style="font-variant-numeric:tabular-nums">0000</span>
+    </div>
+  </div>
+  <div style="font-size:13px;color:var(--color-neutral-700);display:flex;flex-direction:column;gap:4px">
+    <span>3 PINs errados → conta bloqueada.</span>
+    <span>Bloqueada: saque e compra suspensos, depósito liberado.</span>
+    <span>Teclado físico funciona nos teclados numéricos.</span>
+  </div>
+  <div><button class="btn btn-secondary" onClick="{{ resetData }}">Redefinir dados do protótipo</button></div>
+</aside></sc-if>
+
+<div style="position:relative;flex:none;width:{{ phoneW }};height:{{ phoneH }}">
+<div style="position:absolute;top:0;left:0;transform-origin:top left;transform:{{ phoneScale }};width:{{ bezW }};height:{{ bezH }};border-radius:{{ bezR }};background:var(--color-neutral-900);padding:{{ bezP }};box-shadow:var(--shadow-lg)">
+<div ref="{{ screenRef }}" style="position:relative;width:{{ scrW }};height:{{ scrH }};border-radius:{{ scrR }};overflow:hidden;background:var(--color-bg);display:flex;flex-direction:column">
+
+  <sc-if value="{{ desk }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;top:11px;left:50%;width:122px;height:35px;margin-left:-61px;background:#000;border-radius:20px;z-index:60"></div></sc-if>
+  <div style="height:{{ statusH }};overflow:hidden;flex:none;display:flex;align-items:center;justify-content:space-between;padding:6px 34px 0 40px;font-family:var(--font-heading);font-weight:600;font-size:16px;position:relative;z-index:50;color:{{ statusColor }};transition:color .4s">
+    <span style="font-variant-numeric:tabular-nums">{{ clock }}</span>
+    <span style="display:flex;align-items:center;gap:6px">
+      <span style="display:flex;align-items:flex-end;gap:2px;height:11px"><i style="width:3px;height:4px;background:currentColor"></i><i style="width:3px;height:6px;background:currentColor"></i><i style="width:3px;height:8px;background:currentColor"></i><i style="width:3px;height:11px;background:currentColor"></i></span>
+      <span style="width:24px;height:12px;border:1px solid currentColor;padding:1.5px;display:flex"><i style="flex:0 0 76%;background:currentColor"></i></span>
+    </span>
+  </div>
+
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;top:60px;left:16px;right:16px;z-index:45;display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--color-accent-900);color:var(--color-bg);font-size:14px;box-shadow:var(--shadow-md);animation:toastIn .45s cubic-bezier(.2,.9,.25,1) both">
+      <svg viewBox="0 0 24 24" width="18" height="18" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none"><path d="{{ ic.check }}"></path></svg>
+      <span>{{ toast.msg }}</span>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isSplash }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;inset:0;z-index:40;background:var(--color-accent-900);color:var(--color-bg);display:flex;flex-direction:column;justify-content:space-between;padding:120px 34px 64px;animation:fadeIn .3s both">
+      <div style="position:relative;width:170px;height:170px;color:var(--color-accent-300)">
+        <div style="position:absolute;inset:0;border:1px dashed currentColor;border-radius:50%;animation:spin 18s linear infinite"></div>
+        <div style="position:absolute;inset:28px;border:1px solid currentColor;border-radius:50%;animation:frame .8s both"></div>
+        <div style="position:absolute;inset:62px;background:var(--color-bg);border-radius:50%;animation:pop .7s .2s both"></div>
+        <div style="position:absolute;inset:-2px;animation:spin 2.2s cubic-bezier(.5,0,.5,1) infinite"><div style="position:absolute;top:0;left:50%;width:10px;height:10px;margin-left:-5px;background:var(--color-bg)"></div></div>
+        <div style="position:absolute;inset:26px;animation:spin 3.4s linear infinite reverse"><div style="position:absolute;bottom:0;left:50%;width:6px;height:6px;margin-left:-3px;background:currentColor"></div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;font-family:var(--font-heading);font-weight:600;font-size:76px;line-height:.9;letter-spacing:.04em;overflow:hidden">
+          <sc-for list="{{ splashLetters }}" as="l" hint-placeholder-count="6"><span style="display:inline-block;animation:letter .6s {{ l.d }} cubic-bezier(.2,.9,.25,1) both">{{ l.c }}</span></sc-for>
+        </div>
+        <div style="font-size:16px;color:var(--color-accent-200);animation:fadeUp .6s .8s both">Banco, bolsa e o mundo em órbita.</div>
+        <div style="height:1px;background:color-mix(in srgb,var(--color-bg) 25%,transparent);margin-top:18px"><div style="height:1px;background:var(--color-bg);transform-origin:left;animation:grow 1.9s cubic-bezier(.6,0,.2,1) both"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-300)"><span>Conectando ao núcleo</span><span>v1.0</span></div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ false }}">
+    <div style="flex:1;display:flex;flex-direction:column;gap:22px;padding:28px 28px 40px;overflow-y:auto;animation:fadeUp .5s both">
+      <div style="display:flex;align-items:center;gap:10px;color:var(--color-accent-800)">
+        <div style="position:relative;width:26px;height:26px"><div style="position:absolute;inset:0;border:1px solid currentColor;border-radius:50%"></div><div style="position:absolute;inset:8px;background:currentColor;border-radius:50%"></div><div style="position:absolute;inset:-3px;animation:spin 3s linear infinite"><div style="position:absolute;top:0;left:50%;width:5px;height:5px;margin-left:-2.5px;background:currentColor"></div></div></div>
+        <span style="font-family:var(--font-heading);font-weight:600;font-size:20px;letter-spacing:.08em">ÓRBITA</span>
+      </div>
+      <div style="margin-top:36px">
+        <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700);margin-bottom:8px">Acesso seguro</div>
+        <h1 style="font-size:48px;line-height:.98;margin:0">Entre na sua órbita.</h1>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;animation:{{ shakeAnim }}">
+        <div class="field"><label>E-mail</label><input class="input" type="email" placeholder="voce@orbita.com" value="{{ fv.email }}" onChange="{{ fh.email }}" style="min-height:48px;font-size:16px"></div>
+        <div class="field"><label>PIN de 4 dígitos</label><input class="input" type="password" placeholder="••••" value="{{ fv.pin }}" onChange="{{ fh.pin }}" onKeyDown="{{ loginKey }}" style="min-height:48px;font-size:20px;letter-spacing:.4em"></div>
+        <sc-if value="{{ err }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--color-accent-800);background:var(--color-accent-100);border-radius:12px;padding:8px 10px;animation:fadeUp .25s both">{{ err }}</div></sc-if>
+        <button class="btn btn-primary" onClick="{{ login }}" style="min-height:52px;justify-content:space-between;font-size:17px;padding:0 18px;margin-top:4px">
+          
+          <span>Entrar</span>
+          <svg viewBox="0 0 24 24" width="20" height="20" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="{{ ic.arrowRight }}"></path></svg>
+        </button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-size:12px;color:var(--color-neutral-700)">Entrar rápido</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <sc-for list="{{ demoUsers }}" as="d" hint-placeholder-count="3">
+            <button class="btn btn-secondary" onClick="{{ d.on }}" style="gap:8px"><span style="width:22px;height:22px;display:grid;place-items:center;font-size:11px;background:var(--color-accent-100);color:var(--color-accent-800)">{{ d.ini }}</span>{{ d.first }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--color-divider);padding-top:16px">
+        <span style="font-size:14px;color:var(--color-neutral-700)">Ainda não é cliente?</span>
+        <button class="btn btn-ghost" onClick="{{ goSignup }}" style="font-size:16px">Criar conta →</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isSignup }}" hint-placeholder-val="{{ false }}">
+    <div style="flex:1;display:flex;flex-direction:column;gap:18px;padding:12px 28px 40px;overflow-y:auto;animation:fadeUp .45s both">
+      <button class="btn btn-icon btn-secondary" onClick="{{ goLogin }}"><svg viewBox="0 0 24 24" width="20" height="20" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="{{ ic.chevronLeft }}"></path></svg></button>
+      <div>
+        <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700);margin-bottom:6px">Nova conta · 1 minuto</div>
+        <h1 style="font-size:40px;line-height:1;margin:0">Abra sua conta Órbita.</h1>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;animation:{{ shakeAnim }}">
+        <div class="field"><label>Nome completo</label><input class="input" placeholder="Maria Souza" value="{{ fv.name }}" onChange="{{ fh.name }}" style="min-height:46px;font-size:16px"></div>
+        <div class="field"><label>E-mail</label><input class="input" type="email" placeholder="maria@email.com" value="{{ fv.email }}" onChange="{{ fh.email }}" style="min-height:46px;font-size:16px"></div>
+        <div class="field"><label>CPF</label><input class="input" placeholder="000.000.000-00" value="{{ fv.cpf }}" onChange="{{ fh.cpf }}" style="min-height:46px;font-size:16px;font-variant-numeric:tabular-nums"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="field"><label>PIN</label><input class="input" type="password" placeholder="••••" value="{{ fv.pin }}" onChange="{{ fh.pin }}" style="min-height:46px;font-size:18px;letter-spacing:.3em"></div>
+          <div class="field"><label>Confirmar PIN</label><input class="input" type="password" placeholder="••••" value="{{ fv.pin2 }}" onChange="{{ fh.pin2 }}" style="min-height:46px;font-size:18px;letter-spacing:.3em"></div>
+        </div>
+        <sc-if value="{{ err }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--color-accent-800);background:var(--color-accent-100);border-radius:12px;padding:8px 10px;animation:fadeUp .25s both">{{ err }}</div></sc-if>
+        <button class="btn btn-primary" onClick="{{ signup }}" style="min-height:52px;justify-content:space-between;font-size:17px;padding:0 18px;margin-top:6px">
+          
+          <span>Criar conta</span>
+          <svg viewBox="0 0 24 24" width="20" height="20" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="{{ ic.arrowRight }}"></path></svg>
+        </button>
+        <div style="font-size:12px;color:var(--color-neutral-700)">Seu PIN autoriza saques e ordens na bolsa. Três erros bloqueiam a conta.</div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isApp }}" hint-placeholder-val="{{ false }}">
+    <div ref="{{ scrollRef }}" style="flex:1;overflow-y:auto;overflow-x:hidden;padding-bottom:104px">
+
+      <sc-if value="{{ isHome }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:20px;padding:10px 20px 0;animation:fadeUp .45s both">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:42px;height:42px;display:grid;place-items:center;border:1px solid var(--color-divider);font-family:var(--font-heading);font-weight:600;font-size:16px;color:var(--color-accent-800);background:var(--color-accent-100)">{{ me.ini }}</div>
+            <div style="flex:1;min-width:0">
+              <div style="font-family:var(--font-heading);font-weight:600;font-size:22px;line-height:1.05">Olá, {{ me.first }}</div>
+              <div style="font-size:12px;color:var(--color-neutral-700);font-variant-numeric:tabular-nums">Ag 0001 · CC {{ me.acct }}</div>
+            </div>
+            <button class="btn btn-icon btn-secondary" onClick="{{ toggleHide }}"><svg viewBox="0 0 24 24" width="20" height="20" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="{{ eyeIcon }}"></path></svg></button>
+          </div>
+
+          <div class="blueprint" style="padding:18px 18px 16px;overflow:visible;animation:rise .5s both">
+            <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+            <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none"><div style="height:14px;background:linear-gradient(transparent,color-mix(in srgb,var(--color-accent) 18%,transparent));animation:scan 4.5s linear infinite"></div></div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700)">Saldo disponível</span>
+              <span class="tag {{ statusTag }}" style="gap:6px"><i style="width:6px;height:6px;background:currentColor;border-radius:50%;animation:{{ statusPulse }}"></i>{{ statusLabel }}</span>
+            </div>
+            <div style="font-family:var(--font-heading);font-weight:600;font-size:50px;line-height:1;margin:14px 0 16px;font-variant-numeric:tabular-nums;letter-spacing:-.01em">{{ balStr }}</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--color-divider);padding-top:12px;gap:12px">
+              <div><div style="font-size:11px;color:var(--color-neutral-700)">Carteira de ações</div><div style="font-family:var(--font-heading);font-weight:600;font-size:18px;font-variant-numeric:tabular-nums">{{ pfStr }}</div></div>
+              <div><div style="font-size:11px;color:var(--color-neutral-700)">Patrimônio total</div><div style="font-family:var(--font-heading);font-weight:600;font-size:18px;font-variant-numeric:tabular-nums">{{ totalStr }}</div></div>
+            </div>
+          </div>
+
+          <sc-if value="{{ blocked }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ openLocked }}" style="display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;padding:14px;background:var(--color-accent-900);color:var(--color-bg);border:0;text-align:left;cursor:pointer;animation:fadeUp .4s both">
+              <svg viewBox="0 0 24 24" width="24" height="24" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="{{ ic.lock }}"></path></svg>
+              <span><span style="display:block;font-family:var(--font-heading);font-weight:600;font-size:18px;line-height:1.1">Conta bloqueada</span><span style="display:block;font-size:13px;color:var(--color-accent-200)">{{ blockShort }}</span></span>
+              <svg viewBox="0 0 24 24" width="18" height="18" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="{{ ic.chevronRight }}"></path></svg>
+            </button>
+          </sc-if>
+
+          <div class="blueprint" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--color-divider)">
+            <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+            <sc-for list="{{ actions }}" as="a" hint-placeholder-count="4">
+              <button onClick="{{ a.on }}" style="position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:18px;padding:14px 11px 12px;background:var(--color-bg);border:0;cursor:pointer;text-align:left;animation:rise .5s {{ a.delay }} both" style-hover="background:var(--color-accent-100)" style-active="background:var(--color-accent-200)">
+                <svg viewBox="0 0 24 24" width="24" height="24" style="fill:none;stroke:var(--color-accent-700);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="{{ a.d }}"></path></svg>
+                <span style="font-family:var(--font-heading);font-weight:600;font-size:15px;line-height:1">{{ a.label }}</span>
+                <sc-if value="{{ a.locked }}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" width="13" height="13" style="position:absolute;top:10px;right:9px;fill:none;stroke:var(--color-neutral-700);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="{{ ic.lock }}"></path></svg></sc-if>
+              </button>
+            </sc-for>
+          </div>
+
+          <div style="margin:0 -20px;border-top:1px solid var(--color-divider);border-bottom:1px solid var(--color-divider);overflow:hidden;background:var(--color-surface)">
+            <div style="display:flex;width:max-content;animation:marquee 46s linear infinite">
+              <sc-for list="{{ tape }}" as="t" hint-placeholder-count="8">
+                <button onClick="{{ t.on }}" style="display:flex;align-items:baseline;gap:6px;padding:9px 16px;border:0;border-right:1px solid var(--color-divider);background:transparent;cursor:pointer;white-space:nowrap;font-variant-numeric:tabular-nums">
+                  <span style="font-family:var(--font-heading);font-weight:600;font-size:14px">{{ t.ticker }}</span>
+                  <span style="font-size:13px">{{ t.priceStr }}</span>
+                  <span style="font-size:12px;color:{{ t.chgColor }}">{{ t.arrow }} {{ t.chgStr }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+
+          <div>
+            <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px">
+              <h4 style="margin:0;font-size:22px">Movimentações</h4>
+              <span style="font-size:12px;color:var(--color-neutral-700)">{{ txCount }}</span>
+            </div>
+            <sc-for list="{{ txs }}" as="t" hint-placeholder-count="4">
+              <div style="display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--color-divider);animation:fadeUp .4s {{ t.delay }} both">
+                <div style="width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--color-divider)"><svg viewBox="0 0 24 24" width="18" height="18" style="fill:none;stroke:var(--color-accent-700);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="{{ t.d }}"></path></svg></div>
+                <div style="min-width:0"><div style="font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ t.desc }}</div><div style="font-size:12px;color:var(--color-neutral-700)">{{ t.when }}</div></div>
+                <div style="font-family:var(--font-heading);font-weight:600;font-size:16px;font-variant-numeric:tabular-nums;color:{{ t.color }}">{{ t.amtStr }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isMarket }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:16px;padding:10px 20px 0;animation:fadeUp .45s both">
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700)"><i style="width:7px;height:7px;background:var(--color-accent);border-radius:50%;animation:pulse 1.4s infinite"></i>Mercado · ao vivo</div>
+            <h2 style="margin:4px 0 0;font-size:36px">Bolsa global</h2>
+          </div>
+          <div class="blueprint" style="padding:16px;animation:rise .5s both">
+            <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+            <div style="display:flex;justify-content:space-between;align-items:baseline">
+              <span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700)">Sua carteira</span>
+              <span style="font-size:13px;font-variant-numeric:tabular-nums;color:{{ plColor }}">{{ plStr }}</span>
+            </div>
+            <div style="font-family:var(--font-heading);font-weight:600;font-size:38px;line-height:1.05;margin-top:6px;font-variant-numeric:tabular-nums">{{ pfStr }}</div>
+            <sc-if value="{{ hasHoldings }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;gap:8px;overflow-x:auto;margin-top:12px;padding-bottom:2px">
+                <sc-for list="{{ holdList }}" as="h" hint-placeholder-count="2">
+                  <button onClick="{{ h.on }}" style="flex:none;display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:8px 12px;border-radius:12px;border:1px solid var(--color-divider);background:transparent;cursor:pointer;text-align:left" style-hover="background:var(--color-accent-100)">
+                    <span style="font-family:var(--font-heading);font-weight:600;font-size:15px">{{ h.ticker }} <span style="font-weight:400;font-size:12px;color:var(--color-neutral-700)">{{ h.qty }}</span></span>
+                    <span style="font-size:12px;font-variant-numeric:tabular-nums">{{ h.val }} · {{ h.pl }}</span>
+                  </button>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ noHoldings }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--color-neutral-700);margin-top:6px">Nenhuma ação ainda. Toque em um ativo para comprar.</div></sc-if>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;border:1px solid var(--color-divider);border-radius:12px;padding:0 12px;background:var(--color-surface)">
+            <svg viewBox="0 0 24 24" width="18" height="18" style="fill:none;stroke:var(--color-neutral-600);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none"><path d="{{ ic.search }}"></path></svg>
+            <input value="{{ q }}" onChange="{{ onQ }}" placeholder="Buscar ticker ou empresa" style="flex:1;border:0;background:transparent;height:44px;font:inherit;font-size:15px;outline:none;color:var(--color-text)">
+          </div>
+          <div style="display:flex;gap:6px;overflow-x:auto;margin:0 -20px;padding:0 20px 2px">
+            <sc-for list="{{ mfilters }}" as="f" hint-placeholder-count="6">
+              <button onClick="{{ f.on }}" style="flex:none;padding:6px 14px;border-radius:999px;border:1px solid {{ f.border }};background:{{ f.bg }};color:{{ f.color }};font-family:var(--font-heading);font-weight:600;font-size:14px;cursor:pointer;transition:background .2s,color .2s">{{ f.label }}</button>
+            </sc-for>
+          </div>
+          <div style="border-top:1px solid var(--color-divider)">
+            <sc-for list="{{ mlist }}" as="s" hint-placeholder-count="8">
+              <button onClick="{{ s.on }}" style="display:grid;grid-template-columns:1fr 68px 96px;align-items:center;gap:10px;width:100%;padding:12px 6px;background:{{ s.flashBg }};border:0;border-bottom:1px solid var(--color-divider);text-align:left;cursor:pointer;transition:background .7s;animation:fadeUp .35s {{ s.delay }} both" style-hover="background:var(--color-accent-100)">
+                <span style="min-width:0">
+                  <span style="display:flex;align-items:center;gap:6px"><span style="font-family:var(--font-heading);font-weight:600;font-size:18px">{{ s.ticker }}</span><span style="font-size:10px;letter-spacing:.06em;padding:1px 5px;border:1px solid var(--color-divider);color:var(--color-neutral-700)">{{ s.exCode }}</span><sc-if value="{{ s.held }}" hint-placeholder-val="{{ false }}"><span style="width:6px;height:6px;background:var(--color-accent);border-radius:50%"></span></sc-if></span>
+                  <span style="display:block;font-size:12px;color:var(--color-neutral-700);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ s.name }}</span>
+                </span>
+                <svg viewBox="0 0 64 26" width="64" height="26" style="overflow:visible"><polyline points="{{ s.spark }}" style="fill:none;stroke:{{ s.sparkColor }};stroke-width:1.3;stroke-linejoin:round;transition:all .6s"></polyline></svg>
+                <span style="text-align:right;font-variant-numeric:tabular-nums">
+                  <span style="display:block;font-family:var(--font-heading);font-weight:600;font-size:16px">{{ s.priceStr }}</span>
+                  <span style="display:block;font-size:12px;color:{{ s.chgColor }}">{{ s.arrow }} {{ s.chgStr }}</span>
+                </span>
+              </button>
+            </sc-for>
+            <sc-if value="{{ mEmpty }}" hint-placeholder-val="{{ false }}"><div style="padding:28px 0;font-size:14px;color:var(--color-neutral-700)">Nenhum ativo encontrado.</div></sc-if>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isGlobe }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;animation:fadeUp .45s both">
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;padding:10px 20px 0">
+            <div>
+              <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700)">Terminal global</div>
+              <h2 style="margin:4px 0 0;font-size:36px">Mercados no mundo</h2>
+            </div>
+            <div style="text-align:right;font-size:12px;color:var(--color-neutral-700);font-variant-numeric:tabular-nums"><span style="display:block;font-family:var(--font-heading);font-weight:600;font-size:20px;color:var(--color-text)">{{ openCount }}</span>bolsas abertas</div>
+          </div>
+          <div style="position:relative;height:370px;margin-top:4px">
+            <canvas ref="{{ globeRef }}" style="position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab"></canvas>
+            <div style="position:absolute;left:20px;top:10px;font-size:11px;letter-spacing:.08em;color:var(--color-accent-800);font-variant-numeric:tabular-nums;pointer-events:none"><span ref="{{ coordRef }}">—</span></div>
+            <div style="position:absolute;left:20px;bottom:10px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-neutral-700);pointer-events:none">Arraste para girar · toque num ponto</div>
+            <div style="position:absolute;right:16px;top:10px;display:flex;flex-direction:column;border:1px solid var(--color-divider);border-radius:12px;overflow:hidden;background:var(--color-bg)">
+              <button onClick="{{ zoomIn }}" style="width:36px;height:36px;display:grid;place-items:center;border:0;border-bottom:1px solid var(--color-divider);background:transparent;cursor:pointer" style-hover="background:var(--color-accent-100)"><svg viewBox="0 0 24 24" width="18" height="18" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round"><path d="{{ ic.plus }}"></path></svg></button>
+              <button onClick="{{ zoomOut }}" style="width:36px;height:36px;display:grid;place-items:center;border:0;background:transparent;cursor:pointer" style-hover="background:var(--color-accent-100)"><svg viewBox="0 0 24 24" width="18" height="18" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round"><path d="{{ ic.minus }}"></path></svg></button>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;overflow-x:auto;padding:4px 20px 14px">
+            <sc-for list="{{ exChips }}" as="e" hint-placeholder-count="6">
+              <button onClick="{{ e.on }}" style="flex:none;display:flex;align-items:center;gap:7px;padding:7px 13px;border-radius:999px;border:1px solid {{ e.border }};background:{{ e.bg }};color:{{ e.color }};cursor:pointer;transition:all .25s">
+                <i style="width:7px;height:7px;border-radius:50%;border:1px solid currentColor;background:{{ e.dot }}"></i>
+                <span style="font-family:var(--font-heading);font-weight:600;font-size:14px">{{ e.code }}</span>
+              </button>
+            </sc-for>
+          </div>
+          <div style="padding:0 20px">
+            <div class="blueprint" style="padding:16px;animation:{{ exAnim }}">
+              <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+                <div style="min-width:0">
+                  <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700)">{{ exSel.city }} · {{ exSel.cur }}</div>
+                  <div style="font-family:var(--font-heading);font-weight:600;font-size:24px;line-height:1.1">{{ exSel.full }}</div>
+                </div>
+                <div style="text-align:right;flex:none">
+                  <div style="font-family:var(--font-heading);font-weight:600;font-size:24px;line-height:1.1;font-variant-numeric:tabular-nums">{{ exSel.time }}</div>
+                  <span class="tag {{ exSel.tag }}">{{ exSel.status }}</span>
+                </div>
+              </div>
+              <div style="display:flex;gap:16px;font-size:12px;color:var(--color-neutral-700);margin:10px 0 4px;font-variant-numeric:tabular-nums"><span>{{ exSel.coords }}</span><span>{{ exSel.hours }}</span><span>{{ exSel.fxStr }}</span></div>
+              <sc-for list="{{ exStocks }}" as="s" hint-placeholder-count="2">
+                <button onClick="{{ s.on }}" style="display:grid;grid-template-columns:1fr 64px auto;align-items:center;gap:10px;width:100%;padding:10px 0;background:{{ s.flashBg }};border:0;border-top:1px solid var(--color-divider);text-align:left;cursor:pointer;transition:background .7s" style-hover="background:var(--color-accent-100)">
+                  <span style="min-width:0"><span style="display:block;font-family:var(--font-heading);font-weight:600;font-size:17px">{{ s.ticker }}</span><span style="display:block;font-size:12px;color:var(--color-neutral-700);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ s.name }}</span></span>
+                  <svg viewBox="0 0 64 26" width="64" height="26" style="overflow:visible"><polyline points="{{ s.spark }}" style="fill:none;stroke:{{ s.sparkColor }};stroke-width:1.3;stroke-linejoin:round"></polyline></svg>
+                  <span style="text-align:right;font-variant-numeric:tabular-nums"><span style="display:block;font-family:var(--font-heading);font-weight:600;font-size:15px">{{ s.priceStr }}</span><span style="display:block;font-size:12px;color:{{ s.chgColor }}">{{ s.arrow }} {{ s.chgStr }}</span></span>
+                </button>
+              </sc-for>
+              <sc-if value="{{ exEmpty }}" hint-placeholder-val="{{ false }}"><div style="border-top:1px solid var(--color-divider);padding-top:10px;font-size:13px;color:var(--color-neutral-700)">Nenhuma ação listada nesta bolsa. Cadastre uma na aba Banco.</div></sc-if>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isBank }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:16px;padding:10px 20px 0;animation:fadeUp .45s both">
+          <sc-if value="{{ bankLocked }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:18px;padding-top:40px">
+              <div class="blueprint" style="width:96px;height:96px;display:grid;place-items:center;animation:frame .6s both">
+                <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+                <svg viewBox="0 0 24 24" width="40" height="40" style="fill:none;stroke:var(--color-accent-700);stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round"><path d="{{ ic.shield }}"></path></svg>
+              </div>
+              <div>
+                <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700)">Área restrita</div>
+                <h2 style="margin:4px 0 6px;font-size:36px">Painel do gerente</h2>
+                <p style="margin:0;font-size:15px;color:var(--color-neutral-800);text-wrap:pretty">Cadastre, edite, bloqueie e exclua clientes. Liste novas ações nas bolsas do globo.</p>
+              </div>
+              <button class="btn btn-primary" onClick="{{ openMgr }}" style="min-height:52px;justify-content:space-between;font-size:17px;padding:0 18px">
+                
+                <span>Entrar com código</span>
+                <svg viewBox="0 0 24 24" width="20" height="20" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="{{ ic.arrowRight }}"></path></svg>
+              </button>
+              <div style="font-size:12px;color:var(--color-neutral-700)">Código de demonstração: 0000</div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ mgr }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;justify-content:space-between;align-items:flex-end">
+              <div>
+                <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700)">Backoffice · gerente</div>
+                <h2 style="margin:4px 0 0;font-size:36px">Banco Órbita</h2>
+              </div>
+              <button class="btn btn-secondary" onClick="{{ exitMgr }}" style="gap:6px"><svg viewBox="0 0 24 24" width="16" height="16" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="{{ ic.logout }}"></path></svg>Sair</button>
+            </div>
+            <div class="blueprint" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--color-divider)">
+              <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+              <sc-for list="{{ bankStats }}" as="b" hint-placeholder-count="3">
+                <div style="background:var(--color-bg);padding:12px;animation:rise .5s {{ b.delay }} both"><div style="font-size:11px;color:var(--color-neutral-700)">{{ b.label }}</div><div style="font-family:var(--font-heading);font-weight:600;font-size:22px;font-variant-numeric:tabular-nums;line-height:1.2">{{ b.value }}</div></div>
+              </sc-for>
+            </div>
+            <div class="seg" style="display:flex">
+              <label class="seg-opt" style="flex:1;justify-content:center"><input type="radio" name="bk" checked="{{ bvClients }}" onChange="{{ setBvClients }}">Clientes</label>
+              <label class="seg-opt" style="flex:1;justify-content:center"><input type="radio" name="bk" checked="{{ bvStocks }}" onChange="{{ setBvStocks }}">Ações</label>
+            </div>
+            <sc-if value="{{ bvClients }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:12px;animation:fadeUp .35s both">
+                <div style="display:flex;gap:8px">
+                  <div style="flex:1;display:flex;align-items:center;gap:8px;border:1px solid var(--color-divider);border-radius:12px;padding:0 10px;background:var(--color-surface)">
+                    <svg viewBox="0 0 24 24" width="16" height="16" style="fill:none;stroke:var(--color-neutral-600);stroke-width:1.5;stroke-linecap:round;flex:none"><path d="{{ ic.search }}"></path></svg>
+                    <input value="{{ q }}" onChange="{{ onQ }}" placeholder="Buscar cliente" style="flex:1;min-width:0;border:0;background:transparent;height:40px;font:inherit;font-size:14px;outline:none;color:var(--color-text)">
+                  </div>
+                  <button class="btn btn-primary" onClick="{{ newClient }}" style="gap:6px;padding:0 12px"><svg viewBox="0 0 24 24" width="16" height="16" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round"><path d="{{ ic.plus }}"></path></svg>Novo</button>
+                </div>
+                <div style="border-top:1px solid var(--color-divider)">
+                  <sc-for list="{{ clients }}" as="c" hint-placeholder-count="3">
+                    <button onClick="{{ c.on }}" style="display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;width:100%;padding:12px 4px;border:0;border-bottom:1px solid var(--color-divider);background:transparent;text-align:left;cursor:pointer;animation:fadeUp .35s {{ c.delay }} both" style-hover="background:var(--color-accent-100)">
+                      <span style="width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--color-divider);font-family:var(--font-heading);font-weight:600;font-size:14px;color:var(--color-accent-800)">{{ c.ini }}</span>
+                      <span style="min-width:0"><span style="display:block;font-size:15px;font-weight:500">{{ c.name }}{{ c.you }}</span><span style="display:block;font-size:12px;color:var(--color-neutral-700);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ c.email }}</span></span>
+                      <span style="text-align:right"><span style="display:block;font-family:var(--font-heading);font-weight:600;font-size:15px;font-variant-numeric:tabular-nums">{{ c.bal }}</span><span class="tag {{ c.tag }}" style="padding:1px 7px;font-size:10px">{{ c.status }}</span></span>
+                    </button>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ bvStocks }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:12px;animation:fadeUp .35s both">
+                <button class="btn btn-primary" onClick="{{ newStock }}" style="min-height:48px;justify-content:space-between;font-size:16px;padding:0 16px">
+                  
+                  <span>Cadastrar nova ação</span>
+                  <svg viewBox="0 0 24 24" width="18" height="18" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round"><path d="{{ ic.plus }}"></path></svg>
+                </button>
+                <div style="border-top:1px solid var(--color-divider)">
+                  <sc-for list="{{ adminStocks }}" as="s" hint-placeholder-count="5">
+                    <button onClick="{{ s.edit }}" style="display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:12px;width:100%;padding:11px 4px;border:0;border-bottom:1px solid var(--color-divider);background:transparent;text-align:left;cursor:pointer" style-hover="background:var(--color-accent-100)">
+                      <span style="min-width:0"><span style="display:block;font-family:var(--font-heading);font-weight:600;font-size:17px">{{ s.ticker }} <span style="font-family:var(--font-body);font-weight:400;font-size:11px;color:var(--color-neutral-700)">{{ s.exCode }} · {{ s.sector }}</span></span><span style="display:block;font-size:12px;color:var(--color-neutral-700);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ s.name }}</span></span>
+                      <span style="font-family:var(--font-heading);font-weight:600;font-size:15px;font-variant-numeric:tabular-nums">{{ s.priceStr }}</span>
+                      <svg viewBox="0 0 24 24" width="16" height="16" style="fill:none;stroke:var(--color-neutral-600);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="{{ ic.pencil }}"></path></svg>
+                    </button>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isProfile }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:22px;padding:10px 20px 0;animation:fadeUp .45s both">
+          <div style="display:flex;gap:16px;align-items:center;padding-top:10px">
+            <div class="blueprint" style="width:76px;height:76px;display:grid;place-items:center;font-family:var(--font-heading);font-weight:600;font-size:30px;color:var(--color-accent-800);background:var(--color-accent-100);animation:frame .5s both">
+              <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>{{ me.ini }}
+            </div>
+            <div style="min-width:0">
+              <h2 style="margin:0;font-size:30px;line-height:1.05">{{ me.name }}</h2>
+              <div style="font-size:13px;color:var(--color-neutral-700)">{{ me.email }}</div>
+              <span class="tag {{ statusTag }}" style="margin-top:6px">{{ statusLabel }}</span>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--color-divider);border:1px solid var(--color-divider)">
+            <div style="background:var(--color-bg);padding:10px 12px"><div style="font-size:11px;color:var(--color-neutral-700)">CPF</div><div style="font-size:14px;font-variant-numeric:tabular-nums">{{ me.cpfMask }}</div></div>
+            <div style="background:var(--color-bg);padding:10px 12px"><div style="font-size:11px;color:var(--color-neutral-700)">Conta</div><div style="font-size:14px;font-variant-numeric:tabular-nums">0001 · {{ me.acct }}</div></div>
+            <div style="background:var(--color-bg);padding:10px 12px"><div style="font-size:11px;color:var(--color-neutral-700)">Cliente desde</div><div style="font-size:14px">{{ me.since }}</div></div>
+            <div style="background:var(--color-bg);padding:10px 12px"><div style="font-size:11px;color:var(--color-neutral-700)">Tentativas de PIN</div><div style="font-size:14px;font-variant-numeric:tabular-nums">{{ me.failsStr }}</div></div>
+          </div>
+          <div style="border-top:1px solid var(--color-divider)">
+            <sc-for list="{{ menu }}" as="m" hint-placeholder-count="5">
+              <button onClick="{{ m.on }}" style="display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;width:100%;padding:14px 4px;border:0;border-bottom:1px solid var(--color-divider);background:transparent;text-align:left;cursor:pointer;animation:fadeUp .35s {{ m.delay }} both" style-hover="background:var(--color-accent-100)">
+                <svg viewBox="0 0 24 24" width="20" height="20" style="fill:none;stroke:var(--color-accent-700);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="{{ m.d }}"></path></svg>
+                <span><span style="display:block;font-size:15px;font-weight:500">{{ m.label }}</span><span style="display:block;font-size:12px;color:var(--color-neutral-700)">{{ m.sub }}</span></span>
+                <svg viewBox="0 0 24 24" width="16" height="16" style="fill:none;stroke:var(--color-neutral-600);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="{{ ic.chevronRight }}"></path></svg>
+              </button>
+            </sc-for>
+          </div>
+          <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-neutral-600)">Órbita · protótipo v1.0</div>
+        </div>
+      </sc-if>
+    </div>
+
+    <nav style="position:absolute;left:0;right:0;bottom:0;height:86px;background:var(--color-bg);border-top:1px solid var(--color-divider);display:grid;grid-template-columns:repeat(5,1fr);padding-bottom:24px;z-index:10">
+      <div style="position:absolute;top:-1px;left:{{ tabLeft }};width:20%;height:2px;background:var(--color-accent);transition:left .4s cubic-bezier(.2,.9,.25,1)"></div>
+      <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
+        <button onClick="{{ t.go }}" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:0;background:transparent;cursor:pointer;color:{{ t.color }};transition:color .25s">
+          <svg viewBox="0 0 24 24" width="24" height="24" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;animation:{{ t.anim }}"><path d="{{ t.d }}"></path></svg>
+          <span style="font-size:11px;font-weight:500;letter-spacing:.02em">{{ t.l }}</span>
+        </button>
+      </sc-for>
+    </nav>
+  </sc-if>
+
+  <sc-if value="{{ sheetOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:30;display:flex;flex-direction:column;justify-content:flex-end">
+      <div onClick="{{ close }}" style="position:absolute;inset:0;background:color-mix(in srgb,var(--color-neutral-900) 50%,transparent);animation:{{ backAnim }}"></div>
+      <div style="position:relative;max-height:90%;overflow-y:auto;background:var(--color-bg);border-top:1px solid var(--color-divider);padding:10px 22px 36px;animation:{{ sheetAnim }};box-shadow:var(--shadow-lg)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <div style="width:40px;height:3px;background:var(--color-neutral-400)"></div>
+          <button class="btn btn-icon btn-ghost" onClick="{{ close }}" style="width:34px;height:34px;color:var(--color-text)"><svg viewBox="0 0 24 24" width="20" height="20" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round"><path d="{{ ic.x }}"></path></svg></button>
+        </div>
+        <div style="animation:{{ shakeAnim }}">
+
+          <sc-if value="{{ shAmount }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:14px;animation:fadeUp .35s both">
+              <div>
+                <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700)">{{ am.kicker }}</div>
+                <h3 style="margin:2px 0 0;font-size:30px">{{ am.title }}</h3>
+              </div>
+              <sc-if value="{{ am.isDep }}" hint-placeholder-val="{{ false }}">
+                <div class="seg" style="display:flex">
+                  <sc-for list="{{ methods }}" as="m" hint-placeholder-count="3">
+                    <label class="seg-opt" style="flex:1;justify-content:center"><input type="radio" name="dm" checked="{{ m.on }}" onChange="{{ m.pick }}">{{ m.label }}</label>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <div style="display:flex;align-items:baseline;gap:8px;border-bottom:1px solid var(--color-divider);padding:8px 0 12px">
+                <span style="font-family:var(--font-heading);font-weight:600;font-size:24px;color:var(--color-neutral-600)">R$</span>
+                <span style="font-family:var(--font-heading);font-weight:600;font-size:56px;line-height:1;font-variant-numeric:tabular-nums;color:{{ am.color }};transition:color .2s">{{ am.num }}</span>
+                <span style="width:2px;height:44px;background:var(--color-accent);align-self:center;animation:blink 1s steps(1) infinite"></span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--color-neutral-700)"><span>{{ am.info }}</span><span>{{ am.limit }}</span></div>
+              <div style="display:flex;gap:6px">
+                <sc-for list="{{ quick }}" as="qk" hint-placeholder-count="4">
+                  <button class="btn btn-secondary" onClick="{{ qk.on }}" style="flex:1;font-variant-numeric:tabular-nums">{{ qk.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ shPin }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:16px;animation:fadeUp .35s both">
+              <div>
+                <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700)">{{ pn.kicker }}</div>
+                <h3 style="margin:2px 0 2px;font-size:30px">{{ pn.title }}</h3>
+                <div style="font-size:14px;color:var(--color-neutral-800)">{{ pn.sub }}</div>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+                <sc-for list="{{ pinBoxes }}" as="b" hint-placeholder-count="4">
+                  <div style="height:62px;display:grid;place-items:center;border-radius:14px;border:1px solid {{ b.border }};transition:border-color .2s;background:{{ b.bg }}">
+                    <sc-if value="{{ b.filled }}" hint-placeholder-val="{{ false }}"><i style="width:14px;height:14px;border-radius:50%;background:var(--color-accent-800);animation:pop .3s both"></i></sc-if>
+                  </div>
+                </sc-for>
+              </div>
+              <sc-if value="{{ pn.showAttempts }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--color-neutral-700)">
+                  <span>Tentativas</span>
+                  <sc-for list="{{ attempts }}" as="a" hint-placeholder-count="3"><i style="width:10px;height:10px;border:1px solid var(--color-accent-700);background:{{ a.bg }};transition:background .3s"></i></sc-for>
+                </div>
+              </sc-if>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ showErr }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:12px;display:flex;gap:8px;align-items:center;font-size:13px;color:var(--color-accent-900);background:var(--color-accent-100);border:1px solid var(--color-accent-300);border-radius:12px;padding:9px 10px;animation:fadeUp .25s both">
+              <svg viewBox="0 0 24 24" width="16" height="16" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none"><path d="{{ ic.alert }}"></path></svg>{{ err }}
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ shKeypad }}" hint-placeholder-val="{{ false }}">
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--color-divider);border:1px solid var(--color-divider);border-radius:16px;overflow:hidden;margin-top:16px">
+              <sc-for list="{{ keys }}" as="k" hint-placeholder-count="12">
+                <button onClick="{{ k.on }}" style="height:58px;display:grid;place-items:center;border:0;background:var(--color-bg);font-family:var(--font-heading);font-weight:600;font-size:26px;cursor:pointer;font-variant-numeric:tabular-nums" style-hover="background:var(--color-accent-100)" style-active="background:var(--color-accent-300)">
+                  <sc-if value="{{ k.isDel }}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" width="24" height="24" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="{{ ic.del }}"></path></svg></sc-if>
+                  <sc-if value="{{ k.isTxt }}" hint-placeholder-val="{{ true }}">{{ k.label }}</sc-if>
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ shAmount }}" hint-placeholder-val="{{ false }}">
+            <button class="btn btn-primary" onClick="{{ amountGo }}" style="width:100%;min-height:54px;justify-content:space-between;font-size:17px;padding:0 18px;margin-top:16px">
+              
+              <span>{{ am.cta }}</span>
+              <svg viewBox="0 0 24 24" width="20" height="20" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="{{ ic.arrowRight }}"></path></svg>
+            </button>
+          </sc-if>
+
+          <sc-if value="{{ shSuccess }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:16px;padding-top:8px">
+              <div class="blueprint" style="width:96px;height:96px;display:grid;place-items:center;background:var(--color-accent-100);animation:frame .5s cubic-bezier(.2,.9,.25,1) both">
+                <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+                <svg viewBox="0 0 24 24" width="48" height="48" style="fill:none;stroke:var(--color-accent-800);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round"><path d="{{ ic.check }}" style="stroke-dasharray:26;stroke-dashoffset:26;animation:draw .5s .35s ease-out forwards"></path></svg>
+              </div>
+              <div style="animation:fadeUp .45s .2s both">
+                <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700)">{{ sc.title }}</div>
+                <div style="font-family:var(--font-heading);font-weight:600;font-size:48px;line-height:1.05;font-variant-numeric:tabular-nums">{{ sc.big }}</div>
+              </div>
+              <div style="border-top:1px solid var(--color-divider);animation:fadeUp .45s .3s both">
+                <sc-for list="{{ sc.lines }}" as="l" hint-placeholder-count="3">
+                  <div style="display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--color-divider);font-size:14px"><span style="color:var(--color-neutral-700)">{{ l.k }}</span><span style="text-align:right;font-variant-numeric:tabular-nums">{{ l.v }}</span></div>
+                </sc-for>
+              </div>
+              <button class="btn btn-primary" onClick="{{ close }}" style="min-height:52px;justify-content:space-between;font-size:17px;padding:0 18px">
+                <span>Concluir</span>
+                <svg viewBox="0 0 24 24" width="20" height="20" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="{{ ic.check }}"></path></svg>
+              </button>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ shLocked }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:16px;padding-top:8px">
+              <div class="blueprint" style="width:96px;height:96px;display:grid;place-items:center;background:var(--color-accent-900);color:var(--color-bg);animation:frame .5s cubic-bezier(.2,.9,.25,1) both">
+                <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+                <svg viewBox="0 0 24 24" width="46" height="46" style="fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round"><path d="{{ ic.lockBody }}"></path><path d="{{ ic.lockShackle }}" style="animation:lockDrop .6s .4s cubic-bezier(.3,1.6,.5,1) both"></path></svg>
+              </div>
+              <div style="animation:fadeUp .45s .15s both">
+                <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700)">Segurança</div>
+                <h3 style="margin:2px 0 6px;font-size:32px">Conta bloqueada</h3>
+                <p style="margin:0;font-size:15px;color:var(--color-neutral-800);text-wrap:pretty">{{ lk.why }}</p>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--color-divider);border:1px solid var(--color-divider);animation:fadeUp .45s .25s both">
+                <div style="background:var(--color-bg);padding:10px 12px"><div style="font-size:11px;color:var(--color-neutral-700)">Suspenso</div><div style="font-size:14px">Saques e ordens na bolsa</div></div>
+                <div style="background:var(--color-bg);padding:10px 12px"><div style="font-size:11px;color:var(--color-neutral-700)">Liberado</div><div style="font-size:14px">Depósitos e consultas</div></div>
+              </div>
+              <div style="font-size:13px;color:var(--color-neutral-700)">{{ lk.how }}</div>
+              <sc-if value="{{ lk.canSelf }}" hint-placeholder-val="{{ false }}">
+                <button class="btn btn-primary" onClick="{{ selfUnblock }}" style="min-height:52px;justify-content:space-between;font-size:17px;padding:0 18px">
+                  <span>Desbloquear com PIN</span>
+                  <svg viewBox="0 0 24 24" width="20" height="20" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="{{ ic.unlock }}"></path></svg>
+                </button>
+              </sc-if>
+              <button class="btn btn-secondary" onClick="{{ close }}" style="min-height:48px;justify-content:flex-start;font-size:16px;padding:0 18px">Entendi</button>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ shStock }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:14px;animation:fadeUp .35s both">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+                <div style="min-width:0">
+                  <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700)">{{ stv.exFull }} · {{ stv.sector }}</div>
+                  <h3 style="margin:2px 0 0;font-size:34px;line-height:1">{{ stv.ticker }}</h3>
+                  <div style="font-size:14px;color:var(--color-neutral-800)">{{ stv.name }}</div>
+                </div>
+                <div style="text-align:right;flex:none;font-variant-numeric:tabular-nums">
+                  <div style="font-family:var(--font-heading);font-weight:600;font-size:28px;line-height:1.05;padding:0 4px;background:{{ stv.flashBg }};transition:background .7s">{{ stv.priceStr }}</div>
+                  <div style="font-size:13px;color:{{ stv.chgColor }}">{{ stv.arrow }} {{ stv.chgStr }} hoje</div>
+                </div>
+              </div>
+              <div class="blueprint" style="padding:10px 0 4px">
+                <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+                <div style="display:flex;align-items:center;gap:6px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700);padding:0 10px 4px"><i style="width:6px;height:6px;background:var(--color-accent);border-radius:50%;animation:pulse 1.4s infinite"></i>Ao vivo · 40 ticks</div>
+                <svg viewBox="0 0 324 120" style="display:block;width:100%;height:auto;overflow:visible">
+                  <line x1="0" y1="30" x2="324" y2="30" style="stroke:var(--color-divider);stroke-dasharray:2 4"></line>
+                  <line x1="0" y1="60" x2="324" y2="60" style="stroke:var(--color-divider);stroke-dasharray:2 4"></line>
+                  <line x1="0" y1="90" x2="324" y2="90" style="stroke:var(--color-divider);stroke-dasharray:2 4"></line>
+                  <polygon points="{{ stv.area }}" style="fill:var(--color-accent-200);opacity:.7;transition:all .6s"></polygon>
+                  <polyline points="{{ stv.line }}" style="fill:none;stroke:var(--color-accent-700);stroke-width:1.5;stroke-linejoin:round;transition:all .6s"></polyline>
+                  <line x1="0" y1="{{ stv.ly }}" x2="324" y2="{{ stv.ly }}" style="stroke:var(--color-accent-500);stroke-dasharray:3 3;transition:all .6s"></line>
+                  <rect x="{{ stv.lxr }}" y="{{ stv.lyr }}" width="8" height="8" style="fill:var(--color-accent-800);transition:all .6s"></rect>
+                </svg>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--color-divider);border:1px solid var(--color-divider);font-variant-numeric:tabular-nums">
+                <div style="background:var(--color-bg);padding:8px 10px"><div style="font-size:11px;color:var(--color-neutral-700)">Abertura</div><div style="font-size:14px">{{ stv.open }}</div></div>
+                <div style="background:var(--color-bg);padding:8px 10px"><div style="font-size:11px;color:var(--color-neutral-700)">Máxima</div><div style="font-size:14px">{{ stv.max }}</div></div>
+                <div style="background:var(--color-bg);padding:8px 10px"><div style="font-size:11px;color:var(--color-neutral-700)">Mínima</div><div style="font-size:14px">{{ stv.min }}</div></div>
+              </div>
+              <div class="seg" style="display:flex">
+                <label class="seg-opt" style="flex:1;justify-content:center"><input type="radio" name="bs" checked="{{ stv.isBuy }}" onChange="{{ setBuy }}">Comprar</label>
+                <label class="seg-opt" style="flex:1;justify-content:center"><input type="radio" name="bs" checked="{{ stv.isSell }}" onChange="{{ setSell }}">Vender · {{ stv.heldStr }}</label>
+              </div>
+              <div style="display:grid;grid-template-columns:auto 1fr auto;align-items:center;border:1px solid var(--color-divider);border-radius:14px;overflow:hidden">
+                <button onClick="{{ qtyDec }}" style="width:54px;height:54px;border:0;border-right:1px solid var(--color-divider);background:transparent;cursor:pointer;display:grid;place-items:center" style-hover="background:var(--color-accent-100)" style-active="background:var(--color-accent-200)"><svg viewBox="0 0 24 24" width="20" height="20" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round"><path d="{{ ic.minus }}"></path></svg></button>
+                <div style="text-align:center"><div style="font-family:var(--font-heading);font-weight:600;font-size:28px;line-height:1;font-variant-numeric:tabular-nums">{{ stv.qty }}</div><div style="font-size:11px;color:var(--color-neutral-700)">ações</div></div>
+                <button onClick="{{ qtyInc }}" style="width:54px;height:54px;border:0;border-left:1px solid var(--color-divider);background:transparent;cursor:pointer;display:grid;place-items:center" style-hover="background:var(--color-accent-100)" style-active="background:var(--color-accent-200)"><svg viewBox="0 0 24 24" width="20" height="20" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round"><path d="{{ ic.plus }}"></path></svg></button>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:baseline">
+                <div><div style="font-size:12px;color:var(--color-neutral-700)">Total estimado</div><div style="font-size:12px;color:var(--color-neutral-700)">{{ stv.fxNote }}</div></div>
+                <div style="font-family:var(--font-heading);font-weight:600;font-size:28px;font-variant-numeric:tabular-nums">{{ stv.total }}</div>
+              </div>
+              <sc-if value="{{ stockErr }}" hint-placeholder-val="{{ false }}"><div style="display:flex;gap:8px;align-items:center;font-size:13px;color:var(--color-accent-900);background:var(--color-accent-100);border:1px solid var(--color-accent-300);border-radius:12px;padding:9px 10px;animation:fadeUp .25s both"><svg viewBox="0 0 24 24" width="16" height="16" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none"><path d="{{ ic.alert }}"></path></svg>{{ err }}</div></sc-if>
+              <button class="btn btn-primary" onClick="{{ tradeGo }}" style="min-height:54px;justify-content:space-between;font-size:17px;padding:0 18px">
+                
+                <span>{{ stv.cta }}</span>
+                <svg viewBox="0 0 24 24" width="20" height="20" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="{{ stv.ctaIcon }}"></path></svg>
+              </button>
+              <div style="font-size:12px;color:var(--color-neutral-700)">Saldo disponível {{ balRaw }} · ordem confirmada com PIN</div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ shUser }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:12px;animation:fadeUp .35s both">
+              <div>
+                <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700)">{{ uf.kicker }}</div>
+                <h3 style="margin:2px 0 0;font-size:30px">{{ uf.title }}</h3>
+              </div>
+              <sc-if value="{{ uf.isAdmin }}" hint-placeholder-val="{{ false }}">
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--color-divider);border:1px solid var(--color-divider);font-variant-numeric:tabular-nums">
+                  <div style="background:var(--color-bg);padding:8px 10px"><div style="font-size:11px;color:var(--color-neutral-700)">Saldo</div><div style="font-size:14px">{{ uf.bal }}</div></div>
+                  <div style="background:var(--color-bg);padding:8px 10px"><div style="font-size:11px;color:var(--color-neutral-700)">Ativos</div><div style="font-size:14px">{{ uf.assets }}</div></div>
+                  <div style="background:var(--color-bg);padding:8px 10px"><div style="font-size:11px;color:var(--color-neutral-700)">Status</div><div style="font-size:14px">{{ uf.status }}</div></div>
+                </div>
+              </sc-if>
+              <div class="field"><label>Nome completo</label><input class="input" value="{{ fv.name }}" onChange="{{ fh.name }}" style="min-height:44px;font-size:15px"></div>
+              <div class="field"><label>E-mail</label><input class="input" type="email" value="{{ fv.email }}" onChange="{{ fh.email }}" style="min-height:44px;font-size:15px"></div>
+              <sc-if value="{{ uf.showCpf }}" hint-placeholder-val="{{ false }}"><div class="field"><label>CPF</label><input class="input" value="{{ fv.cpf }}" onChange="{{ fh.cpf }}" placeholder="000.000.000-00" style="min-height:44px;font-size:15px"></div></sc-if>
+              <sc-if value="{{ uf.isNew }}" hint-placeholder-val="{{ false }}">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                  <div class="field"><label>PIN inicial</label><input class="input" type="password" value="{{ fv.pin }}" onChange="{{ fh.pin }}" placeholder="••••" style="min-height:44px;font-size:16px;letter-spacing:.3em"></div>
+                  <div class="field"><label>Saldo inicial (R$)</label><input class="input" value="{{ fv.balance }}" onChange="{{ fh.balance }}" placeholder="0,00" style="min-height:44px;font-size:15px"></div>
+                </div>
+              </sc-if>
+              <sc-if value="{{ err }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--color-accent-900);background:var(--color-accent-100);border:1px solid var(--color-accent-300);border-radius:12px;padding:9px 10px;animation:fadeUp .25s both">{{ err }}</div></sc-if>
+              <button class="btn btn-primary" onClick="{{ saveUser }}" style="min-height:52px;justify-content:space-between;font-size:17px;padding:0 18px;margin-top:4px">
+                <span>{{ uf.cta }}</span>
+                <svg viewBox="0 0 24 24" width="20" height="20" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="{{ ic.check }}"></path></svg>
+              </button>
+              <sc-if value="{{ uf.isAdmin }}" hint-placeholder-val="{{ false }}">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                  <button class="btn btn-secondary" onClick="{{ uf.toggleBlock }}" style="min-height:46px;justify-content:flex-start;gap:8px;padding:0 14px"><svg viewBox="0 0 24 24" width="18" height="18" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="{{ uf.blockIcon }}"></path></svg>{{ uf.blockLabel }}</button>
+                  <button class="btn btn-secondary" onClick="{{ uf.del }}" style="min-height:46px;justify-content:flex-start;gap:8px;padding:0 14px"><svg viewBox="0 0 24 24" width="18" height="18" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="{{ ic.trash }}"></path></svg>Excluir cliente</button>
+                </div>
+              </sc-if>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ shStockForm }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:12px;animation:fadeUp .35s both">
+              <div>
+                <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700)">Listagem · backoffice</div>
+                <h3 style="margin:2px 0 0;font-size:30px">{{ sf.title }}</h3>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                <div class="field"><label>Ticker</label><input class="input" value="{{ fv.ticker }}" onChange="{{ fh.ticker }}" placeholder="ORBT3" disabled="{{ sf.isEdit }}" style="min-height:44px;font-size:16px;font-family:var(--font-heading);font-weight:600;letter-spacing:.04em"></div>
+                <div class="field"><label>Preço ({{ sf.cur }})</label><input class="input" value="{{ fv.price }}" onChange="{{ fh.price }}" placeholder="10,00" style="min-height:44px;font-size:15px"></div>
+              </div>
+              <div class="field"><label>Empresa</label><input class="input" value="{{ fv.sname }}" onChange="{{ fh.sname }}" placeholder="Órbita Holding S.A." style="min-height:44px;font-size:15px"></div>
+              <div class="field"><label>Setor</label><input class="input" value="{{ fv.sector }}" onChange="{{ fh.sector }}" placeholder="Financeiro" style="min-height:44px;font-size:15px"></div>
+              <div class="field">
+                <label>Bolsa · aparece no globo</label>
+                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--color-divider);border:1px solid var(--color-divider);border-radius:12px;overflow:hidden">
+                  <sc-for list="{{ sf.exPick }}" as="e" hint-placeholder-count="12">
+                    <button onClick="{{ e.on }}" style="padding:8px 4px;border:0;background:{{ e.bg }};color:{{ e.color }};font-family:var(--font-heading);font-weight:600;font-size:14px;cursor:pointer;transition:background .2s">{{ e.code }}</button>
+                  </sc-for>
+                </div>
+              </div>
+              <sc-if value="{{ err }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--color-accent-900);background:var(--color-accent-100);border:1px solid var(--color-accent-300);border-radius:12px;padding:9px 10px;animation:fadeUp .25s both">{{ err }}</div></sc-if>
+              <button class="btn btn-primary" onClick="{{ saveStock }}" style="min-height:52px;justify-content:space-between;font-size:17px;padding:0 18px;margin-top:4px">
+                <span>{{ sf.cta }}</span>
+                <svg viewBox="0 0 24 24" width="20" height="20" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="{{ ic.check }}"></path></svg>
+              </button>
+              <sc-if value="{{ sf.isEdit }}" hint-placeholder-val="{{ false }}">
+                <button class="btn btn-secondary" onClick="{{ delStock }}" style="min-height:46px;justify-content:flex-start;gap:8px;padding:0 14px"><svg viewBox="0 0 24 24" width="18" height="18" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="{{ ic.trash }}"></path></svg>Remover da bolsa</button>
+              </sc-if>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ shChangePin }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:12px;animation:fadeUp .35s both">
+              <div>
+                <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700)">Segurança</div>
+                <h3 style="margin:2px 0 0;font-size:30px">Alterar PIN</h3>
+              </div>
+              <div class="field"><label>PIN atual</label><input class="input" type="password" value="{{ fv.pinOld }}" onChange="{{ fh.pinOld }}" placeholder="••••" style="min-height:44px;font-size:18px;letter-spacing:.3em"></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                <div class="field"><label>Novo PIN</label><input class="input" type="password" value="{{ fv.pin }}" onChange="{{ fh.pin }}" placeholder="••••" style="min-height:44px;font-size:18px;letter-spacing:.3em"></div>
+                <div class="field"><label>Confirmar</label><input class="input" type="password" value="{{ fv.pin2 }}" onChange="{{ fh.pin2 }}" placeholder="••••" style="min-height:44px;font-size:18px;letter-spacing:.3em"></div>
+              </div>
+              <sc-if value="{{ err }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--color-accent-900);background:var(--color-accent-100);border:1px solid var(--color-accent-300);border-radius:12px;padding:9px 10px;animation:fadeUp .25s both">{{ err }}</div></sc-if>
+              <button class="btn btn-primary" onClick="{{ savePin }}" style="min-height:52px;justify-content:space-between;font-size:17px;padding:0 18px;margin-top:4px">
+                <span>Salvar novo PIN</span>
+                <svg viewBox="0 0 24 24" width="20" height="20" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="{{ ic.check }}"></path></svg>
+              </button>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ shConfirm }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:14px;animation:fadeUp .35s both">
+              <div class="blueprint" style="width:64px;height:64px;display:grid;place-items:center;animation:frame .45s both">
+                <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+                <svg viewBox="0 0 24 24" width="28" height="28" style="fill:none;stroke:var(--color-accent-800);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="{{ cf.d }}"></path></svg>
+              </div>
+              <div>
+                <h3 style="margin:0 0 6px;font-size:30px">{{ cf.title }}</h3>
+                <p style="margin:0;font-size:15px;color:var(--color-neutral-800);text-wrap:pretty">{{ cf.body }}</p>
+              </div>
+              <sc-if value="{{ cf.hasGo }}" hint-placeholder-val="{{ false }}">
+                <button class="btn btn-primary" onClick="{{ cf.go }}" style="min-height:52px;justify-content:space-between;font-size:17px;padding:0 18px">
+                  <span>{{ cf.label }}</span>
+                  <svg viewBox="0 0 24 24" width="20" height="20" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="{{ ic.arrowRight }}"></path></svg>
+                </button>
+              </sc-if>
+              <button class="btn btn-secondary" onClick="{{ close }}" style="min-height:48px;justify-content:flex-start;font-size:16px;padding:0 18px">{{ cf.cancel }}</button>
+            </div>
+          </sc-if>
+
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ desk }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;bottom:8px;left:50%;width:134px;height:5px;margin-left:-67px;background:{{ homeBar }};border-radius:3px;z-index:70;pointer-events:none"></div></sc-if>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#1d2d3d"/><circle cx="50" cy="50" r="20" fill="none" stroke="#b5d9fd" stroke-width="1.5"/><ellipse cx="50" cy="50" rx="8" ry="20" fill="none" stroke="#b5d9fd" transform="rotate(60 50 50)"/><ellipse cx="50" cy="50" rx="8" ry="20" fill="none" stroke="#b5d9fd" transform="rotate(-60 50 50)"/><circle cx="50" cy="50" r="5" fill="#f2f2f3"/></svg></template>
+</div>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;autoRotate&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Globo&quot;},&quot;liveTicks&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Mercado&quot;},&quot;maxAttempts&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:3,&quot;min&quot;:1,&quot;max&quot;:6,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Segurança&quot;}}">
+const LS='orbita-bank-v1';
+const EX=[
+{code:'B3',full:'B3 · Brasil, Bolsa, Balcão',city:'São Paulo',lat:-23.55,lon:-46.63,tz:'America/Sao_Paulo',cur:'BRL',fx:1,o:10,c:17,side:1},
+{code:'NYC',full:'NYSE · Nasdaq',city:'Nova York',lat:40.71,lon:-74.01,tz:'America/New_York',cur:'USD',fx:5.35,o:9.5,c:16,side:1},
+{code:'TSX',full:'Toronto Stock Exchange',city:'Toronto',lat:43.65,lon:-79.38,tz:'America/Toronto',cur:'CAD',fx:3.9,o:9.5,c:16,side:-1},
+{code:'LSE',full:'London Stock Exchange',city:'Londres',lat:51.51,lon:-0.09,tz:'Europe/London',cur:'GBP',fx:7.2,o:8,c:16.5,side:-1},
+{code:'EPA',full:'Euronext Paris',city:'Paris',lat:48.86,lon:2.35,tz:'Europe/Paris',cur:'EUR',fx:6.25,o:9,c:17.5,side:-1},
+{code:'FRA',full:'Deutsche Börse',city:'Frankfurt',lat:50.11,lon:8.68,tz:'Europe/Berlin',cur:'EUR',fx:6.25,o:9,c:17.5,side:1},
+{code:'JSE',full:'Johannesburg Stock Exchange',city:'Joanesburgo',lat:-26.2,lon:28.04,tz:'Africa/Johannesburg',cur:'ZAR',fx:.3,o:9,c:17,side:1},
+{code:'NSE',full:'National Stock Exchange',city:'Mumbai',lat:19.07,lon:72.87,tz:'Asia/Kolkata',cur:'INR',fx:.064,o:9.25,c:15.5,side:1},
+{code:'SSE',full:'Shanghai Stock Exchange',city:'Xangai',lat:31.23,lon:121.47,tz:'Asia/Shanghai',cur:'CNY',fx:.75,o:9.5,c:15,side:1},
+{code:'HKEX',full:'Hong Kong Exchanges',city:'Hong Kong',lat:22.28,lon:114.16,tz:'Asia/Hong_Kong',cur:'HKD',fx:.69,o:9.5,c:16,side:-1},
+{code:'TSE',full:'Tokyo Stock Exchange',city:'Tóquio',lat:35.68,lon:139.77,tz:'Asia/Tokyo',cur:'JPY',fx:.036,o:9,c:15,side:1},
+{code:'ASX',full:'Australian Securities Exchange',city:'Sydney',lat:-33.87,lon:151.21,tz:'Australia/Sydney',cur:'AUD',fx:3.55,o:10,c:16,side:1}];
+const EXM=Object.fromEntries(EX.map(e=>[e.code,e]));
+const SEED=[['PETR4','Petrobras','Energia','B3',38.2],['VALE3','Vale','Mineração','B3',61.4],['ITUB4','Itaú Unibanco','Financeiro','B3',34.1],['WEGE3','WEG','Industrial','B3',41.8],
+['AAPL','Apple','Tecnologia','NYC',228.5],['NVDA','NVIDIA','Semicondutores','NYC',176.3],['MSFT','Microsoft','Tecnologia','NYC',512.4],['KO','Coca-Cola','Consumo','NYC',68.2],
+['SHOP','Shopify','Tecnologia','TSX',210.4],['SHEL','Shell','Energia','LSE',27.1],['AZN','AstraZeneca','Saúde','LSE',110.2],['MC','LVMH','Luxo','EPA',520.3],['AIR','Airbus','Aeroespacial','EPA',190.6],
+['SAP','SAP','Software','FRA',238.4],['SIE','Siemens','Industrial','FRA',224.9],['NPN','Naspers','Tecnologia','JSE',4980],['RELIANCE','Reliance Industries','Energia','NSE',1402],
+['600519','Kweichow Moutai','Consumo','SSE',1450],['0700','Tencent','Tecnologia','HKEX',602],['7203','Toyota','Automotivo','TSE',2810],['6758','Sony','Tecnologia','TSE',3920],['BHP','BHP Group','Mineração','ASX',42.3]];
+const IC={
+home:'M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8 M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z',
+chart:'M9 5v4 M7 9h4v6H7z M9 15v2 M17 3v2 M15 5h4v8h-4z M17 13v3 M3 3v16a2 2 0 0 0 2 2h16',
+globe:'M12 12m-10 0a10 10 0 1 0 20 0a10 10 0 1 0 -20 0 M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20 M2 12h20',
+bank:'M10 18v-7 M11.12 2.198a2 2 0 0 1 1.76.006l7.866 3.847c.476.233.31.949-.22.949H3.474c-.53 0-.695-.716-.22-.949z M14 18v-7 M18 18v-7 M3 22h18 M6 18v-7',
+user:'M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2 M12 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0',
+dep:'M12 17V3 M6 11l6 6 6-6 M19 21H5', saq:'M18 9l-6-6-6 6 M12 3v14 M5 21h14',
+lock:'M5 11h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2z M7 11V7a5 5 0 0 1 10 0v4',
+lockBody:'M5 11h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2z M12 15v3', lockShackle:'M7 11V7a5 5 0 0 1 10 0v4',
+unlock:'M5 11h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2z M7 11V7a5 5 0 0 1 9.9-1',
+plus:'M5 12h14 M12 5v14', minus:'M5 12h14', x:'M18 6 6 18 M6 6l12 12', check:'M20 6 9 17l-5-5',
+chevronLeft:'M15 18l-6-6 6-6', chevronRight:'M9 18l6-6-6-6', arrowRight:'M5 12h14 M12 5l7 7-7 7',
+eye:'M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0 M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0',
+eyeOff:'M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49 M14.084 14.158a3 3 0 0 1-4.242-4.242 M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143 M2 2l20 20',
+trash:'M3 6h18 M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6 M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2',
+pencil:'M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z',
+logout:'M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4 M16 17l5-5-5-5 M21 12H9',
+up:'M22 7l-8.5 8.5-5-5L2 17 M16 7h6v6', down:'M22 17l-8.5-8.5-5 5L2 7 M16 17h6v-6',
+search:'M11 11m-8 0a8 8 0 1 0 16 0a8 8 0 1 0 -16 0 M21 21l-4.3-4.3',
+del:'M10 5a2 2 0 0 0-1.344.519l-6.328 5.74a1 1 0 0 0 0 1.481l6.328 5.741A2 2 0 0 0 10 19h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z M12 9l6 6 M18 9l-6 6',
+shield:'M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z',
+key:'M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z M16.5 7.5m-.5 0a.5 .5 0 1 0 1 0a.5 .5 0 1 0 -1 0',
+alert:'M12 12m-10 0a10 10 0 1 0 20 0a10 10 0 1 0 -20 0 M12 8v4 M12 16h.01',
+spark:'M12 3v18 M3 12h18'};
+const TABS=[{k:'home',l:'Início',i:'home'},{k:'market',l:'Mercado',i:'chart'},{k:'globe',l:'Globo',i:'globe'},{k:'bank',l:'Banco',i:'bank'},{k:'profile',l:'Perfil',i:'user'}];
+const brl=n=>(n||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const money=(n,c)=>n.toLocaleString('pt-BR',{style:'currency',currency:c,maximumFractionDigits:c==='JPY'?0:2,minimumFractionDigits:c==='JPY'?0:2});
+const pct=n=>(n>=0?'+':'')+n.toFixed(2).replace('.',',')+'%';
+const uid=()=>Math.random().toString(36).slice(2,9);
+const ini=n=>{const p=(n||'?').trim().split(/\s+/);return ((p[0]||'')[0]+((p.length>1?p[p.length-1]:'')[0]||'')).toUpperCase()};
+const maskCpf=v=>{const d=v.replace(/\D/g,'').slice(0,11);let o=d.slice(0,3);if(d.length>3)o+='.'+d.slice(3,6);if(d.length>6)o+='.'+d.slice(6,9);if(d.length>9)o+='-'+d.slice(9);return o};
+const parseNum=v=>parseFloat(String(v||'').replace(/\./g,'').replace(',','.'));
+const hhmm=d=>d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+const fmtT=ts=>{const d=new Date(ts),n=new Date();if(d.toDateString()===n.toDateString())return 'Hoje, '+hhmm(d);const y=new Date(n-864e5);if(d.toDateString()===y.toDateString())return 'Ontem, '+hhmm(d);return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'})+' · '+hhmm(d)};
+function mkHist(p){const h=[p];for(let i=0;i<39;i++)h.unshift(+(h[0]*(1+(Math.random()-.5)*.018)).toFixed(2));return h}
+function pts(h,w,hh,pad){pad=pad||2;const mn=Math.min(...h),mx=Math.max(...h),r=mx-mn||1;return h.map((v,i)=>[+(i/(h.length-1)*w).toFixed(1),+(pad+(1-(v-mn)/r)*(hh-pad*2)).toFixed(1)])}
+const TF={};
+function localInfo(e,now){const f=TF[e.tz]||(TF[e.tz]=new Intl.DateTimeFormat('en-GB',{timeZone:e.tz,weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false}));const p=f.formatToParts(now),g=t=>(p.find(x=>x.type===t)||{}).value;const h=(+g('hour'))%24,m=+g('minute'),wd=g('weekday'),hr=h+m/60;return {time:String(h).padStart(2,'0')+':'+String(m).padStart(2,'0'),open:!['Sat','Sun'].includes(wd)&&hr>=e.o&&hr<e.c}}
+const fh2=n=>{const h=Math.floor(n),m=Math.round((n-h)*60);return h+'h'+(m?String(m).padStart(2,'0'):'')};
+function seedUsers(){const n=Date.now(),H=36e5;return [
+{id:'u1',name:'Ana Ribeiro',email:'ana@orbita.com',cpf:'123.456.789-09',pin:'1234',balance:12480.55,blocked:false,reason:null,fails:0,since:'Mar 2024',acct:'48213-7',holdings:{PETR4:{qty:40,avg:36.9},NVDA:{qty:6,avg:158.2}},tx:[
+{id:'t1',type:'dep',amt:3500,desc:'Depósito · PIX',ts:n-2*H},{id:'t2',type:'buy',amt:-5078.22,desc:'Compra · 6 NVDA',ts:n-26*H},{id:'t3',type:'saq',amt:-400,desc:'Saque · Caixa 24h',ts:n-50*H},{id:'t4',type:'dep',amt:9800,desc:'Salário · TED',ts:n-120*H}]},
+{id:'u2',name:'Bruno Tavares',email:'bruno@orbita.com',cpf:'987.654.321-00',pin:'4321',balance:3150,blocked:false,reason:null,fails:0,since:'Jan 2025',acct:'77120-3',holdings:{},tx:[{id:'t5',type:'dep',amt:3150,desc:'Depósito · TED',ts:n-30*H}]},
+{id:'u3',name:'Carla Mendes',email:'carla@orbita.com',cpf:'456.123.789-55',pin:'1111',balance:890.2,blocked:true,reason:'pin',fails:3,since:'Ago 2025',acct:'30958-1',holdings:{VALE3:{qty:5,avg:59.8}},tx:[{id:'t6',type:'dep',amt:1189.2,desc:'Depósito · PIX',ts:n-80*H},{id:'t7',type:'buy',amt:-299,desc:'Compra · 5 VALE3',ts:n-79*H}]}]}
+function seedStocks(){return SEED.map(([t,n,s,e,p])=>({ticker:t,name:n,sector:s,ex:e,price:p,hist:mkHist(p)}))}
+function initState(){let sv=null;try{sv=JSON.parse(localStorage.getItem(LS))}catch(e){}
+return {users:(sv&&sv.users)||seedUsers(),stocks:(sv&&sv.stocks)||seedStocks(),session:(sv&&sv.session)||null,screen:'splash',tab:'home',sheet:null,closing:false,form:{},err:'',shake:0,amt:'',pin:'',qty:1,toast:null,hide:false,dispBal:0,mgr:false,bv:'clients',q:'',mf:'Todas',selEx:'B3',exN:0,fit:1,mob:typeof window!=='undefined'&&window.innerWidth<560,now:Date.now()}}
+
+class Component extends DCLogic {
+  state = initState();
+  ic = IC;
+  fh = (()=>{const o={};['name','email','cpf','pin','pin2','pinOld','balance','ticker','sname','sector','price'].forEach(k=>{o[k]=e=>{let v=e.target.value;if(k.indexOf('pin')===0)v=v.replace(/\D/g,'').slice(0,4);if(k==='cpf')v=maskCpf(v);if(k==='ticker')v=v.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,8);this.setState(s=>({form:{...s.form,[k]:v},err:''}))}});return o})();
+
+  componentDidMount(){
+    this.t1=setTimeout(()=>{const ok=this.state.session&&this.state.users.some(u=>u.id===this.state.session);this.setState({screen:ok?'app':'login',session:ok?this.state.session:null})},2300);
+    this.iv=setInterval(()=>this.tick(),2000);
+    this.kd=e=>this.onKey(e);window.addEventListener('keydown',this.kd);
+    window.addEventListener('resize',this.fitRef);this.fitRef();
+  }
+  componentWillUnmount(){clearTimeout(this.t1);clearInterval(this.iv);window.removeEventListener('keydown',this.kd);window.removeEventListener('resize',this.fitRef);cancelAnimationFrame(this.graf);cancelAnimationFrame(this.braf)}
+  sideEffects(s,u){
+    if(this._su!==s.users||this._ss!==s.session||this._st!==s.stocks){this._su=s.users;this._ss=s.session;this._st=s.stocks;clearTimeout(this.sv);this.sv=setTimeout(()=>{try{const t=this.state;localStorage.setItem(LS,JSON.stringify({users:t.users,stocks:t.stocks.map(({flash,...x})=>x),session:t.session}))}catch(e){}},500)}
+    if(this._tab!==s.tab){this._tab=s.tab;if(this.scroller)this.scroller.scrollTop=0}
+    if(s.screen==='app'&&u){const k=u.id+':'+u.balance;if(this._bk!==k){const first=!this._bk||this._bk.split(':')[0]!==u.id;this._bk=k;setTimeout(()=>this.animBal(first?0:undefined),first?250:0)}}else this._bk=null;
+  }
+  fitRef=()=>{const mob=window.innerWidth<560,f=mob?1:Math.max(.5,Math.min(1,(window.innerHeight-32)/866));if(Math.abs(f-this.state.fit)>.01||mob!==this.state.mob)this.setState({fit:f,mob})};
+  me(){return this.state.users.find(u=>u.id===this.state.session)}
+  upd(id,fn){this.setState(s=>({users:s.users.map(u=>u.id===id?fn(u):u)}))}
+  toast(msg){clearTimeout(this.tt);this.setState({toast:{msg}});this.tt=setTimeout(()=>this.setState({toast:null}),2600)}
+  fail(msg){this.setState(s=>({err:msg,shake:s.shake+1,pin:''}))}
+  animBal(from){const u=this.me();if(!u)return;const to=u.balance,f=from==null?this.state.dispBal:from,t0=performance.now();cancelAnimationFrame(this.braf);
+    const step=t=>{const p=Math.min(1,(t-t0)/1100),e=1-Math.pow(1-p,4);this.setState({dispBal:f+(to-f)*e});if(p<1)this.braf=requestAnimationFrame(step)};this.braf=requestAnimationFrame(step)}
+  tick(){
+    if(this.props.liveTicks===false){this.setState({now:Date.now()});return}
+    this.setState(s=>({now:Date.now(),stocks:s.stocks.map(st=>{if(Math.random()<.65)return st.flash?{...st,flash:null}:st;const p=+(st.price*(1+(Math.random()-.485)*.009)).toFixed(2);return {...st,price:p,hist:[...st.hist.slice(-39),p],flash:p>=st.price?'up':'down'}})}));
+    clearTimeout(this.ft);this.ft=setTimeout(()=>this.setState(s=>({stocks:s.stocks.map(x=>x.flash?{...x,flash:null}:x)})),800);
+  }
+  onKey(e){const sh=this.state.sheet;if(!sh||e.target.tagName==='INPUT')return;
+    if(sh.kind==='amount'||sh.kind==='pin'){if(/^\d$/.test(e.key))this.press(e.key);else if(e.key==='Backspace')this.press('del');else if(e.key==='Enter'&&sh.kind==='amount')this.amountGo()}
+    if(e.key==='Escape')this.close()}
+  open(sheet,extra){this.setState({sheet,closing:false,err:'',pin:'',...(extra||{})})}
+  close=()=>{if(!this.state.sheet)return;this.setState({closing:true});clearTimeout(this.ct);this.ct=setTimeout(()=>this.setState({sheet:null,closing:false,err:'',pin:'',amt:''}),260)};
+  press(k){const sh=this.state.sheet;if(!sh)return;
+    if(sh.kind==='amount')this.setState(s=>{let a=s.amt;if(k==='del')a=a.slice(0,-1);else if(k==='00')a=a?a+'00':a;else a=(a+k).replace(/^0+/,'');return a.length>9?null:{amt:a,err:''}});
+    if(sh.kind==='pin')this.setState(s=>{if(s.pin.length>=4&&k!=='del')return null;const p=k==='del'?s.pin.slice(0,-1):s.pin+k;if(p.length===4&&!this._vt)this._vt=setTimeout(()=>{this._vt=null;this.verifyPin(p)},220);return {pin:p,err:''}})}
+  amountGo=()=>{const s=this.state,sh=s.sheet,u=this.me(),v=(parseInt(s.amt||'0',10))/100;if(!u||!sh)return;
+    if(v<=0)return this.fail('Digite um valor maior que zero');
+    if(sh.op==='dep'){if(v>50000)return this.fail('Limite por depósito: R$ 50.000,00');return this.applyDep(v,sh.method||'PIX')}
+    if(u.blocked)return this.open({kind:'locked'});
+    if(v>u.balance)return this.fail('Saldo insuficiente · disponível '+brl(u.balance));
+    if(v>5000)return this.fail('Limite por saque: R$ 5.000,00');
+    this.open({kind:'pin',purpose:'withdraw',v})};
+  applyDep(v,m){const u=this.me(),nb=+(u.balance+v).toFixed(2);this.upd(u.id,x=>({...x,balance:nb,tx:[{id:uid(),type:'dep',amt:v,desc:'Depósito · '+m,ts:Date.now()},...x.tx]}));
+    this.open({kind:'success',title:'Depósito confirmado',big:brl(v),lines:[['Método',m],['Novo saldo',brl(nb)],['Protocolo','#'+uid().toUpperCase()]]},{amt:''})}
+  applySaq(v){const u=this.me(),nb=+(u.balance-v).toFixed(2);this.upd(u.id,x=>({...x,balance:nb,fails:0,tx:[{id:uid(),type:'saq',amt:-v,desc:'Saque · Caixa 24h',ts:Date.now()},...x.tx]}));
+    this.open({kind:'success',title:'Saque autorizado',big:brl(v),lines:[['Código de retirada',String(Math.floor(100000+Math.random()*899999))],['Válido por','30 minutos'],['Novo saldo',brl(nb)]]},{amt:''})}
+  openStock(t){this.open({kind:'stock',ticker:t,mode:'buy'},{qty:1})}
+  tradeGo=()=>{const s=this.state,sh=s.sheet,u=this.me(),st=s.stocks.find(x=>x.ticker===sh.ticker);if(!st)return;const e=EXM[st.ex],total=+(s.qty*st.price*e.fx).toFixed(2),held=((u.holdings||{})[st.ticker]||{}).qty||0;
+    if(u.blocked)return this.open({kind:'locked'});
+    if(sh.mode==='buy'&&total>u.balance)return this.fail('Saldo insuficiente para '+s.qty+' '+st.ticker+' · faltam '+brl(total-u.balance));
+    if(sh.mode==='sell'&&s.qty>held)return this.fail(held?'Você tem apenas '+held+' '+st.ticker:'Você não possui '+st.ticker);
+    this.open({kind:'pin',purpose:'trade',mode:sh.mode,ticker:st.ticker,qty:s.qty,price:st.price,total})};
+  applyTrade(sh){const st=this.state.stocks.find(x=>x.ticker===sh.ticker),e=EXM[st.ex],u=this.me(),buy=sh.mode==='buy',total=+(sh.qty*st.price*e.fx).toFixed(2);
+    this.upd(u.id,x=>{const H={...(x.holdings||{})},o=H[sh.ticker]||{qty:0,avg:0};if(buy)H[sh.ticker]={qty:o.qty+sh.qty,avg:(o.qty*o.avg+sh.qty*st.price)/(o.qty+sh.qty)};else{const q=o.qty-sh.qty;if(q>0)H[sh.ticker]={...o,qty:q};else delete H[sh.ticker]}
+      return {...x,holdings:H,fails:0,balance:+(x.balance+(buy?-total:total)).toFixed(2),tx:[{id:uid(),type:buy?'buy':'sell',amt:buy?-total:total,desc:(buy?'Compra · ':'Venda · ')+sh.qty+' '+sh.ticker,ts:Date.now()},...x.tx]}});
+    this.open({kind:'success',title:buy?'Ordem de compra executada':'Ordem de venda executada',big:brl(total),lines:[['Ativo',st.ticker+' · '+st.name],['Quantidade',sh.qty+' ações'],['Preço executado',money(st.price,e.cur)],['Bolsa',e.full]]})}
+  verifyPin(p){const s=this.state,sh=s.sheet;if(!sh||sh.kind!=='pin')return;
+    if(sh.purpose==='manager'){if(p==='0000'){this.setState({mgr:true,bv:'clients'});this.close();this.toast('Modo gerente ativado')}else this.fail('Código de gerente inválido');return}
+    const u=this.me(),max=this.props.maxAttempts||3;
+    if(p===u.pin){this.upd(u.id,x=>({...x,fails:0}));
+      if(sh.purpose==='withdraw')this.applySaq(sh.v);
+      else if(sh.purpose==='trade')this.applyTrade(sh);
+      else if(sh.purpose==='unblock'){this.upd(u.id,x=>({...x,blocked:false,reason:null,fails:0}));this.open({kind:'success',title:'Conta desbloqueada',big:'Tudo certo',lines:[['Saques','Liberados'],['Ordens na bolsa','Liberadas']]})}
+      return}
+    const f=(u.fails||0)+1;
+    if(f>=max){this.upd(u.id,x=>({...x,fails:f,blocked:true,reason:x.blocked?x.reason:'pin'}));this.setState(st=>({shake:st.shake+1}));setTimeout(()=>this.open({kind:'locked'}),350)}
+    else{this.upd(u.id,x=>({...x,fails:f}));this.fail('PIN incorreto · '+(max-f)+(max-f===1?' tentativa restante':' tentativas restantes'))}}
+  login=()=>{const s=this.state,f=s.form,em=(f.email||'').trim().toLowerCase(),u=s.users.find(x=>x.email.toLowerCase()===em),max=this.props.maxAttempts||3;
+    if(!em)return this.fail('Informe seu e-mail');if(!u)return this.fail('E-mail não encontrado');if((f.pin||'').length!==4)return this.fail('O PIN tem 4 dígitos');
+    if(u.pin!==f.pin){const n=(u.fails||0)+1;if(n>=max){this.upd(u.id,x=>({...x,fails:n,blocked:true,reason:x.blocked?x.reason:'pin'}));return this.fail('Conta bloqueada após '+max+' tentativas. Entre com o PIN correto para ver seu extrato.')}
+      this.upd(u.id,x=>({...x,fails:n}));return this.fail('PIN incorreto · '+(max-n)+(max-n===1?' tentativa restante':' tentativas restantes'))}
+    this.upd(u.id,x=>({...x,fails:0}));this.setState({session:u.id,screen:'app',tab:'home',form:{},err:'',mgr:false});this.toast(u.blocked?'Conta em modo restrito':'Bem-vindo(a) de volta, '+u.name.split(' ')[0])};
+  signup=()=>{const s=this.state,f=s.form,name=(f.name||'').trim(),em=(f.email||'').trim().toLowerCase();
+    if(name.split(/\s+/).length<2)return this.fail('Informe nome e sobrenome');if(!/^\S+@\S+\.\S+$/.test(em))return this.fail('E-mail inválido');
+    if(s.users.some(u=>u.email.toLowerCase()===em))return this.fail('Este e-mail já tem conta');if((f.cpf||'').replace(/\D/g,'').length!==11)return this.fail('CPF precisa de 11 dígitos');
+    if((f.pin||'').length!==4)return this.fail('Crie um PIN de 4 dígitos');if(f.pin!==f.pin2)return this.fail('Os PINs não conferem');
+    const u={id:uid(),name,email:em,cpf:f.cpf,pin:f.pin,balance:0,blocked:false,reason:null,fails:0,since:'Set 2026',acct:String(Math.floor(10000+Math.random()*89999))+'-'+Math.floor(Math.random()*10),holdings:{},tx:[{id:uid(),type:'sys',amt:0,desc:'Conta aberta',ts:Date.now()}]};
+    this.setState({users:[...s.users,u],session:u.id,screen:'app',tab:'home',form:{},err:''});this.toast('Conta criada · bem-vindo(a) à Órbita')};
+  saveUser=()=>{const s=this.state,sh=s.sheet,f=s.form,name=(f.name||'').trim(),em=(f.email||'').trim().toLowerCase();
+    if(name.split(/\s+/).length<2)return this.fail('Informe nome e sobrenome');if(!/^\S+@\S+\.\S+$/.test(em))return this.fail('E-mail inválido');
+    if(s.users.some(u=>u.id!==sh.id&&u.email.toLowerCase()===em))return this.fail('E-mail já usado por outro cliente');
+    if(sh.mode!=='self'&&(f.cpf||'').replace(/\D/g,'').length!==11)return this.fail('CPF precisa de 11 dígitos');
+    if(sh.mode==='new'){if((f.pin||'').length!==4)return this.fail('PIN inicial de 4 dígitos');const b=f.balance?parseNum(f.balance):0;if(isNaN(b)||b<0)return this.fail('Saldo inicial inválido');
+      const u={id:uid(),name,email:em,cpf:f.cpf,pin:f.pin,balance:b,blocked:false,reason:null,fails:0,since:'Set 2026',acct:String(Math.floor(10000+Math.random()*89999))+'-'+Math.floor(Math.random()*10),holdings:{},tx:[{id:uid(),type:'sys',amt:0,desc:'Conta aberta pelo gerente',ts:Date.now()}].concat(b?[{id:uid(),type:'dep',amt:b,desc:'Depósito inicial',ts:Date.now()}]:[])};
+      this.setState({users:[...s.users,u]});this.close();return this.toast('Cliente '+name.split(' ')[0]+' cadastrado')}
+    this.upd(sh.id,x=>({...x,name,email:em,cpf:sh.mode==='self'?x.cpf:f.cpf}));this.close();this.toast('Dados atualizados')};
+  savePin=()=>{const f=this.state.form,u=this.me();if(f.pinOld!==u.pin)return this.fail('PIN atual incorreto');if((f.pin||'').length!==4)return this.fail('Novo PIN com 4 dígitos');if(f.pin!==f.pin2)return this.fail('Os PINs não conferem');if(f.pin===u.pin)return this.fail('Escolha um PIN diferente do atual');
+    this.upd(u.id,x=>({...x,pin:f.pin}));this.close();this.toast('PIN alterado')};
+  saveStock=()=>{const s=this.state,sh=s.sheet,f=s.form,t=(f.ticker||'').trim(),p=parseNum(f.price);
+    if(t.length<2)return this.fail('Ticker com pelo menos 2 caracteres');if(!sh.edit&&s.stocks.some(x=>x.ticker===t))return this.fail(t+' já está listada');
+    if(!(f.sname||'').trim())return this.fail('Informe o nome da empresa');if(!(p>0))return this.fail('Preço precisa ser maior que zero');
+    const ex=f.ex||'B3';
+    if(sh.edit)this.setState(st=>({stocks:st.stocks.map(x=>x.ticker===t?{...x,name:f.sname.trim(),sector:(f.sector||'').trim()||'Outros',ex,price:p,hist:x.price===p&&x.ex===ex?x.hist:[...x.hist.slice(-39),p]}:x)}));
+    else this.setState(st=>({stocks:[{ticker:t,name:f.sname.trim(),sector:(f.sector||'').trim()||'Outros',ex,price:p,hist:mkHist(p)},...st.stocks],selEx:ex}));
+    this.close();this.toast(sh.edit?t+' atualizada':t+' listada na '+ex)};
+  confirm(o){this.open({kind:'confirm',...o})}
+  resetData=()=>{try{localStorage.removeItem(LS)}catch(e){}cancelAnimationFrame(this.braf);this.setState({...initState(),users:seedUsers(),stocks:seedStocks(),session:null,screen:'login',fit:this.state.fit})};
+
+  globeRef=el=>{if(el){this.cv=el;this.initGlobe()}else{this.cv=null;cancelAnimationFrame(this.graf)}};
+  coordRef=el=>{this.coordEl=el};
+  scrollRef=el=>{this.scroller=el};
+  screenRef=el=>{this.screenEl=el};
+  initGlobe(){const cv=this.cv;if(!cv)return;
+    if(!window.d3||!window.topojson){setTimeout(()=>this.initGlobe(),150);return}
+    if(!window.__orbLand&&window.__orbTopo)window.__orbLand=topojson.feature(window.__orbTopo,window.__orbTopo.objects.land);
+    if(!window.__orbLand&&!window.__orbLandP)window.__orbLandP=fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json').then(r=>r.json()).then(t=>{window.__orbLand=topojson.feature(t,t.objects.land)}).catch(()=>{});
+    const e0=EXM[this.state.selEx]||EX[0];
+    this.g=this.g||{rot:[-e0.lon+40,-12],vel:[0,0],scale:.6,scaleT:1,last:0};
+    this.g.scale=.6;
+    this.grat=d3.geoGraticule10();
+    const cs=getComputedStyle(document.documentElement),v=(n,d)=>cs.getPropertyValue(n).trim()||d;
+    this.C={a100:v('--color-accent-100','#eef6ff'),a200:v('--color-accent-200','#d6ebff'),a300:v('--color-accent-300','#b5d9fd'),a400:v('--color-accent-400','#94bce3'),a500:v('--color-accent-500','#749dc4'),a600:v('--color-accent-600','#597ea3'),a700:v('--color-accent-700','#416180'),a800:v('--color-accent-800','#2c455d'),a900:v('--color-accent-900','#1d2d3d'),ink:v('--color-text','#1d1f20'),bg:v('--color-bg','#f2f2f3'),n500:v('--color-neutral-500','#98989b')};
+    const g=this.g;
+    cv.onpointerdown=e=>{g.drag={x:e.offsetX,y:e.offsetY,m:0};g.anim=null;g.vel=[0,0];cv.setPointerCapture(e.pointerId);cv.style.cursor='grabbing'};
+    cv.onpointermove=e=>{if(!g.drag)return;const dx=e.offsetX-g.drag.x,dy=e.offsetY-g.drag.y;g.drag.x=e.offsetX;g.drag.y=e.offsetY;g.drag.m+=Math.abs(dx)+Math.abs(dy);const k=.3/g.scale;g.rot[0]+=dx*k;g.rot[1]=Math.max(-75,Math.min(75,g.rot[1]-dy*k));g.vel=[dx*k,-dy*k]};
+    cv.onpointerup=e=>{if(g.drag&&g.drag.m<6)this.globeHit(e.offsetX,e.offsetY);g.drag=null;g.last=performance.now();cv.style.cursor='grab'};
+    cv.onpointercancel=()=>{g.drag=null};
+    cv.onwheel=e=>{e.preventDefault();g.scaleT=Math.max(.8,Math.min(2.6,g.scaleT*(e.deltaY<0?1.1:.9)))};
+    cancelAnimationFrame(this.graf);const loop=t=>{try{this.drawGlobe(t)}catch(err){}this.graf=requestAnimationFrame(loop)};this.graf=requestAnimationFrame(loop)}
+  globeHit(x,y){let best=null,bd=24;(this.hits||[]).forEach(h=>{const d=Math.hypot(h.x-x,h.y-y);if(d<bd){bd=d;best=h}});if(best)this.selectEx(best.code)}
+  selectEx(code){this.setState(s=>({selEx:code,exN:s.exN+1}));const e=EXM[code],g=this.g;if(!g||!e)return;const from=[...g.rot],d=((-e.lon-from[0])%360+540)%360-180;g.anim={from,to:[from[0]+d,Math.max(-60,Math.min(60,-e.lat*.85))],t0:performance.now(),dur:1200};g.vel=[0,0]}
+  drawGlobe(t){const cv=this.cv,d3=window.d3;if(!cv||!d3||!this.C)return;
+    const dpr=window.devicePixelRatio||1,W=cv.clientWidth,H=cv.clientHeight;if(!W)return;
+    if(cv.width!==Math.round(W*dpr)||cv.height!==Math.round(H*dpr)){cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr)}
+    const ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
+    const g=this.g,C=this.C,land=window.__orbLand;
+    if(g.anim){const p=Math.min(1,(t-g.anim.t0)/g.anim.dur),e=p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;g.rot[0]=g.anim.from[0]+(g.anim.to[0]-g.anim.from[0])*e;g.rot[1]=g.anim.from[1]+(g.anim.to[1]-g.anim.from[1])*e;if(p>=1){g.anim=null;g.last=t}}
+    else if(!g.drag){g.rot[0]+=g.vel[0];g.rot[1]=Math.max(-75,Math.min(75,g.rot[1]+g.vel[1]));g.vel=[g.vel[0]*.94,g.vel[1]*.94];if(this.props.autoRotate!==false&&t-g.last>3000&&Math.abs(g.vel[0])<.05)g.rot[0]+=.09}
+    g.scale+=(g.scaleT-g.scale)*.08;
+    const cx=W/2,cy=H/2+4,R=Math.min(W,H)/2*.78*g.scale;
+    const proj=d3.geoOrthographic().scale(R).translate([cx,cy]).rotate(g.rot).clipAngle(90).precision(.7),path=d3.geoPath(proj,ctx);
+    const orb=R+34,tilt=-.38,sa=t/2600,sx=Math.cos(sa)*orb,sy=Math.sin(sa)*orb*.26;
+    const orbit=(a0,a1)=>{ctx.save();ctx.translate(cx,cy);ctx.rotate(tilt);ctx.beginPath();ctx.ellipse(0,0,orb,orb*.26,0,a0,a1);ctx.strokeStyle=C.a500;ctx.lineWidth=.8;ctx.stroke();ctx.restore()};
+    const sat=()=>{ctx.save();ctx.translate(cx,cy);ctx.rotate(tilt);ctx.fillStyle=C.a800;ctx.fillRect(sx-3.5,sy-3.5,7,7);ctx.strokeStyle=C.a600;ctx.beginPath();ctx.moveTo(sx-9,sy);ctx.lineTo(sx+9,sy);ctx.stroke();ctx.restore()};
+    ctx.save();ctx.translate(cx,cy);ctx.setLineDash([2,6]);ctx.lineDashOffset=-t/60;ctx.strokeStyle=C.a400;ctx.lineWidth=1;ctx.beginPath();ctx.arc(0,0,R+14,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+    for(let i=0;i<72;i++){const a=i/72*Math.PI*2,l=i%6===0?7:3;ctx.beginPath();ctx.moveTo(Math.cos(a)*(R+22),Math.sin(a)*(R+22));ctx.lineTo(Math.cos(a)*(R+22+l),Math.sin(a)*(R+22+l));ctx.strokeStyle=i%6===0?C.a600:C.a300;ctx.stroke()}ctx.restore();
+    orbit(Math.PI,Math.PI*2);if(sy<0)sat();
+    ctx.beginPath();path({type:'Sphere'});const gr=ctx.createRadialGradient(cx-R*.35,cy-R*.4,R*.05,cx,cy,R);gr.addColorStop(0,C.a100);gr.addColorStop(1,C.a200);ctx.fillStyle=gr;ctx.fill();
+    ctx.beginPath();path(this.grat);ctx.strokeStyle=C.a300;ctx.lineWidth=.6;ctx.stroke();
+    if(land){ctx.beginPath();path(land);ctx.fillStyle=C.a400;ctx.globalAlpha=.55;ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle=C.a700;ctx.lineWidth=.7;ctx.stroke()}
+    const L=((t/45)%360)-180-g.rot[0];ctx.beginPath();path({type:'LineString',coordinates:[[L,-89],[L,0],[L,89]]});ctx.strokeStyle=C.a600;ctx.globalAlpha=.55;ctx.lineWidth=1.4;ctx.stroke();ctx.globalAlpha=1;
+    ctx.beginPath();path({type:'Sphere'});ctx.strokeStyle=C.a700;ctx.lineWidth=1;ctx.stroke();
+    const center=[-g.rot[0],-g.rot[1]],sel=EXM[this.state.selEx]||EX[0],vis=pt=>d3.geoDistance(pt,center)<1.5,open=this.openMap||{};
+    EX.forEach((e,i)=>{if(e===sel)return;const a=[sel.lon,sel.lat],b=[e.lon,e.lat];ctx.beginPath();path({type:'LineString',coordinates:[a,b]});ctx.setLineDash([3,4]);ctx.lineDashOffset=-t/35;ctx.strokeStyle=C.a600;ctx.globalAlpha=.75;ctx.lineWidth=.9;ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1;
+      const pt=d3.geoInterpolate(a,b)(((t/2800)+i*.19)%1);if(vis(pt)){const q=proj(pt);ctx.fillStyle=C.a800;ctx.fillRect(q[0]-1.8,q[1]-1.8,3.6,3.6)}});
+    this.hits=[];ctx.font='600 12px "Barlow Condensed", sans-serif';ctx.textBaseline='middle';
+    EX.forEach((e,i)=>{const pt=[e.lon,e.lat];if(!vis(pt))return;const q=proj(pt),x=q[0],y=q[1],isSel=e===sel,op=(open[e.code]||{}).open;this.hits.push({x,y,code:e.code});
+      const ph=((t/1500)+i*.23)%1;ctx.beginPath();ctx.arc(x,y,3+ph*(isSel?20:13),0,Math.PI*2);ctx.strokeStyle=C.a700;ctx.globalAlpha=(1-ph)*.85;ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1;
+      if(op){ctx.fillStyle=C.a800;ctx.fillRect(x-3.5,y-3.5,7,7)}else{ctx.fillStyle=C.bg;ctx.fillRect(x-3.5,y-3.5,7,7);ctx.strokeStyle=C.a800;ctx.strokeRect(x-3.5,y-3.5,7,7)}
+      const lx=x+e.side*10,tw=ctx.measureText(e.code).width;ctx.fillStyle=C.bg;ctx.globalAlpha=.85;ctx.fillRect(e.side>0?lx-2:lx-tw-2,y-8,tw+4,16);ctx.globalAlpha=1;ctx.fillStyle=isSel?C.a900:C.ink;ctx.textAlign=e.side>0?'left':'right';ctx.fillText(e.code,lx,y);
+      if(isSel){const s=15,m=4;ctx.strokeStyle=C.a900;ctx.lineWidth=1;[[-1,-1],[1,-1],[-1,1],[1,1]].forEach(([a,b])=>{const X=x+a*s,Y=y+b*s;ctx.beginPath();ctx.moveTo(X-m,Y);ctx.lineTo(X+m,Y);ctx.moveTo(X,Y-m);ctx.lineTo(X,Y+m);ctx.stroke()});
+        ctx.strokeStyle=C.a700;ctx.setLineDash([2,3]);ctx.strokeRect(x-s,y-s,s*2,s*2);ctx.setLineDash([])}});
+    orbit(0,Math.PI);if(sy>=0)sat();
+    if(this.coordEl){const lo=((( -g.rot[0])%360)+540)%360-180,la=-g.rot[1];this.coordEl.textContent='λ '+(lo>=0?'+':'')+lo.toFixed(1)+'°   φ '+(la>=0?'+':'')+la.toFixed(1)+'°   ×'+g.scale.toFixed(2)}}
+
+  renderVals(){
+    const s=this.state,u=this.me(),now=new Date(s.now),SM={};this.sideEffects(s,u);s.stocks.forEach(x=>SM[x.ticker]=x);
+    const infos={};EX.forEach(e=>infos[e.code]=localInfo(e,now));this.openMap=infos;
+    const H=(u&&u.holdings)||{};let pv=0,pc=0;const holdList=[];
+    Object.keys(H).forEach(t=>{const st=SM[t],h=H[t];if(!st||!h.qty)return;const e=EXM[st.ex],val=h.qty*st.price*e.fx,cost=h.qty*h.avg*e.fx;pv+=val;pc+=cost;holdList.push({ticker:t,qty:h.qty+' un.',val:brl(val),pl:pct((val/cost-1)*100),on:()=>this.openStock(t)})});
+    const sv=(st,i)=>{const e=EXM[st.ex]||EX[0],ch=(st.price/st.hist[0]-1)*100,up=ch>=0;return {ticker:st.ticker,name:st.name,sector:st.sector,exCode:e.code,priceStr:money(st.price,e.cur),chgStr:pct(ch),arrow:up?'▲':'▼',chgColor:up?'var(--color-accent-700)':'var(--color-neutral-700)',spark:pts(st.hist,64,26).map(p=>p.join(',')).join(' '),sparkColor:up?'var(--color-accent-600)':'var(--color-neutral-500)',flashBg:st.flash==='up'?'var(--color-accent-100)':st.flash==='down'?'var(--color-neutral-200)':'transparent',held:!!(H[st.ticker]&&H[st.ticker].qty),delay:Math.min(i||0,12)*.03+'s',on:()=>this.openStock(st.ticker),edit:()=>this.open({kind:'stockForm',edit:true},{form:{ticker:st.ticker,sname:st.name,sector:st.sector,price:String(st.price).replace('.',','),ex:st.ex}})}};
+    const blocked=!!(u&&u.blocked),sh=s.sheet,kind=sh&&sh.kind;
+    const reasonTxt={pin:'Bloqueada após tentativas de PIN incorretas.',admin:'Bloqueada pelo gerente do banco.',user:'Você bloqueou a conta por segurança.'};
+    const tabIdx=TABS.findIndex(t=>t.k===s.tab);
+    const q=(s.q||'').trim().toLowerCase();
+    let ml=s.stocks;if(s.mf==='Carteira')ml=ml.filter(x=>H[x.ticker]&&H[x.ticker].qty);else if(s.mf!=='Todas')ml=ml.filter(x=>x.ex===s.mf);if(q&&s.tab==='market')ml=ml.filter(x=>x.ticker.toLowerCase().includes(q)||x.name.toLowerCase().includes(q));
+    const selE=EXM[s.selEx]||EX[0],selI=infos[selE.code];
+    const sOn=(on)=>({border:on?'var(--color-accent)':'var(--color-divider)',bg:on?'var(--color-accent)':'transparent',color:on?'var(--color-bg)':'var(--color-text)'});
+    const amtV=(parseInt(s.amt||'0',10))/100;
+    const stS=kind==='stock'&&SM[sh.ticker];
+    let stv={};if(stS){const b=sv(stS),e=EXM[stS.ex],P=pts(stS.hist,316,120,8),last=P[P.length-1],held=(H[stS.ticker]||{}).qty||0,buy=sh.mode==='buy';
+      stv={...b,exFull:e.full,line:P.map(p=>p.join(',')).join(' '),area:'0,120 '+P.map(p=>p.join(',')).join(' ')+' 316,120',ly:last[1],lxr:last[0]-4,lyr:last[1]-4,open:money(stS.hist[0],e.cur),max:money(Math.max(...stS.hist),e.cur),min:money(Math.min(...stS.hist),e.cur),isBuy:buy,isSell:!buy,heldStr:held+' un.',qty:s.qty,total:brl(s.qty*stS.price*e.fx),fxNote:e.cur==='BRL'?'Liquidação em D+2':'Câmbio 1 '+e.cur+' = '+brl(e.fx),cta:buy?'Comprar '+s.qty+' '+stS.ticker:'Vender '+s.qty+' '+stS.ticker,ctaIcon:buy?IC.up:IC.down}}
+    const tu=kind==='userForm'&&sh.id&&s.users.find(x=>x.id===sh.id);
+    const keysAm=['1','2','3','4','5','6','7','8','9','00','0','del'],keysPin=['1','2','3','4','5','6','7','8','9','','0','del'];
+    const pinT={withdraw:['Autorizar saque','Confirme com seu PIN',sh&&sh.v?'Saque de '+brl(sh.v):''],trade:['Confirmar ordem','Assinatura digital',sh&&sh.ticker?(sh.mode==='buy'?'Compra':'Venda')+' de '+sh.qty+' '+sh.ticker+' · '+brl(sh.total):''],manager:['Código do gerente','Acesso restrito','Digite o código de 4 dígitos · demo 0000'],unblock:['Desbloquear conta','Segurança','Confirme seu PIN para reativar saques e ordens']}[sh&&sh.purpose]||['','',''];
+    const maxA=this.props.maxAttempts||3,fails=(u&&u.fails)||0;
+    const cf=kind==='confirm'?sh:{};
+    const txs=u?u.tx.slice(0,8).map((t,i)=>({d:IC[t.type==='sell'?'down':t.type==='buy'?'up':t.type==='sys'?'check':t.type],desc:t.desc,when:fmtT(t.ts),amtStr:t.amt===0?'—':(t.amt>0?'+ ':'− ')+brl(Math.abs(t.amt)),color:t.amt>0?'var(--color-accent-700)':'var(--color-text)',delay:(.15+i*.05)+'s'})):[];
+    const vUser=x=>({ini:ini(x.name),name:x.name,you:x.id===s.session?' · você':'',email:x.email,bal:brl(x.balance),tag:x.blocked?'tag-neutral':'tag-accent',status:x.blocked?'Bloqueada':'Ativa'});
+    let clients=s.users;if(q&&s.tab==='bank')clients=clients.filter(x=>x.name.toLowerCase().includes(q)||x.email.includes(q));
+    return {
+      ic:IC,fh:this.fh,fv:{name:s.form.name||'',email:s.form.email||'',cpf:s.form.cpf||'',pin:s.form.pin||'',pin2:s.form.pin2||'',pinOld:s.form.pinOld||'',balance:s.form.balance||'',ticker:s.form.ticker||'',sname:s.form.sname||'',sector:s.form.sector||'',price:s.form.price||''},
+      err:s.err,showErr:!!s.err&&(kind==='amount'||kind==='pin'),stockErr:!!s.err&&kind==='stock',
+      shakeAnim:s.shake?(s.shake%2?'shakeA':'shakeB')+' .45s both':'none',
+      screenRef:this.screenRef,scrollRef:this.scrollRef,globeRef:this.globeRef,coordRef:this.coordRef,
+      clock:hhmm(now),phoneW:s.mob?'100vw':Math.round(412*s.fit)+'px',phoneH:s.mob?'100dvh':Math.round(866*s.fit)+'px',phoneScale:s.mob?'none':'scale('+s.fit+')',
+      desk:!s.mob,pagePad:s.mob?'0':'40px 24px',bezW:s.mob?'100vw':'412px',bezH:s.mob?'100dvh':'866px',bezR:s.mob?'0':'58px',bezP:s.mob?'0':'11px',scrW:s.mob?'100vw':'390px',scrH:s.mob?'100dvh':'844px',scrR:s.mob?'0':'47px',statusH:s.mob?'env(safe-area-inset-top, 0px)':'54px',statusColor:s.screen==='splash'?'var(--color-bg)':'var(--color-text)',homeBar:s.screen==='splash'?'var(--color-bg)':'var(--color-text)',
+      toast:s.toast,
+      isSplash:s.screen==='splash',isLogin:s.screen==='login',isSignup:s.screen==='signup',isApp:s.screen==='app'&&!!u,
+      splashLetters:'ÓRBITA'.split('').map((c,i)=>({c,d:(.35+i*.07)+'s'})),
+      loginKey:e=>{if(e.key==='Enter')this.login()},login:this.login,signup:this.signup,resetData:this.resetData,
+      goSignup:()=>this.setState({screen:'signup',form:{},err:''}),goLogin:()=>this.setState({screen:'login',form:{},err:''}),
+      demoUsers:s.users.slice(0,4).map(x=>({ini:ini(x.name),first:x.name.split(' ')[0],on:()=>this.setState({form:{email:x.email,pin:x.pin},err:''})})),
+      me:u?{ini:ini(u.name),first:u.name.split(' ')[0],name:u.name,email:u.email,acct:u.acct,since:u.since,cpfMask:'•••.'+(u.cpf||'').slice(4,11)+'-••',failsStr:(u.fails||0)+' de '+maxA}:{},
+      isHome:s.tab==='home',isMarket:s.tab==='market',isGlobe:s.tab==='globe',isBank:s.tab==='bank',isProfile:s.tab==='profile',
+      tabs:TABS.map(t=>({l:t.l,d:IC[t.i],color:s.tab===t.k?'var(--color-accent-700)':'var(--color-neutral-600)',anim:s.tab===t.k?'pop .45s both':'none',go:()=>{if(s.tab!==t.k)this.setState({tab:t.k,q:''})}})),
+      tabLeft:(tabIdx*20)+'%',
+      eyeIcon:s.hide?IC.eyeOff:IC.eye,toggleHide:()=>this.setState({hide:!s.hide}),
+      balStr:s.hide?'R$ ••••••':brl(s.dispBal),balRaw:u?brl(u.balance):'',pfStr:s.hide?'R$ ••••':brl(pv),totalStr:s.hide?'R$ ••••':brl(pv+(u?u.balance:0)),
+      plStr:pc?(pv>=pc?'▲ ':'▼ ')+pct((pv/pc-1)*100)+' · '+brl(pv-pc):'',plColor:pv>=pc?'var(--color-accent-700)':'var(--color-neutral-700)',
+      hasHoldings:holdList.length>0,noHoldings:holdList.length===0,holdList,
+      blocked,statusTag:blocked?'tag-neutral':'tag-accent',statusLabel:blocked?'Bloqueada':'Ativa',statusPulse:blocked?'none':'pulse 1.6s infinite',
+      blockShort:u&&u.blocked?(reasonTxt[u.reason]||'')+' Toque para detalhes.':'',
+      openLocked:()=>this.open({kind:'locked'}),
+      actions:[{label:'Depositar',d:IC.dep,on:()=>this.open({kind:'amount',op:'dep',method:'PIX'},{amt:''})},{label:'Sacar',d:IC.saq,locked:blocked,on:()=>blocked?this.open({kind:'locked'}):this.open({kind:'amount',op:'saq'},{amt:''})},{label:'Investir',d:IC.chart,locked:blocked,on:()=>this.setState({tab:'market'})},{label:'Globo',d:IC.globe,on:()=>this.setState({tab:'globe'})}].map((a,i)=>({...a,delay:(.1+i*.06)+'s'})),
+      tape:[...s.stocks,...s.stocks].map(st=>sv(st)),
+      txs,txCount:u?u.tx.length+' registros':'',
+      q:s.q,onQ:e=>this.setState({q:e.target.value}),
+      mfilters:['Todas','Carteira',...EX.map(e=>e.code)].map(f=>({label:f,...sOn(s.mf===f),on:()=>this.setState({mf:f})})),
+      mlist:ml.map(sv),mEmpty:ml.length===0,
+      openCount:EX.filter(e=>infos[e.code].open).length+'/'+EX.length,
+      zoomIn:()=>{if(this.g)this.g.scaleT=Math.min(2.6,this.g.scaleT*1.25)},zoomOut:()=>{if(this.g)this.g.scaleT=Math.max(.8,this.g.scaleT/1.25)},
+      exChips:EX.map(e=>{const on=e.code===s.selEx;return {code:e.code,...sOn(on),dot:infos[e.code].open?'currentColor':'transparent',on:()=>this.selectEx(e.code)}}),
+      exSel:{...selE,time:selI.time,status:selI.open?'Aberta':'Fechada',tag:selI.open?'tag-accent':'tag-neutral',coords:Math.abs(selE.lat).toFixed(2)+'°'+(selE.lat<0?'S':'N')+' '+Math.abs(selE.lon).toFixed(2)+'°'+(selE.lon<0?'W':'E'),hours:fh2(selE.o)+'–'+fh2(selE.c)+' local',fxStr:selE.cur==='BRL'?'Moeda local':'1 '+selE.cur+' = '+brl(selE.fx)},
+      exAnim:(s.exN%2?'fadeUp':'rise')+' .45s both',
+      exStocks:s.stocks.filter(x=>x.ex===selE.code).map(sv),exEmpty:!s.stocks.some(x=>x.ex===selE.code),
+      bankLocked:!s.mgr,mgr:s.mgr,openMgr:()=>this.open({kind:'pin',purpose:'manager'}),exitMgr:()=>{this.setState({mgr:false});this.toast('Modo gerente encerrado')},
+      bankStats:[{label:'Clientes',value:String(s.users.length)},{label:'Custódia',value:brl(s.users.reduce((a,x)=>a+x.balance,0)).replace(/,\d\d$/,'')},{label:'Bloqueadas',value:String(s.users.filter(x=>x.blocked).length)}].map((b,i)=>({...b,delay:(i*.07)+'s'})),
+      bvClients:s.bv==='clients',bvStocks:s.bv==='stocks',setBvClients:()=>this.setState({bv:'clients',q:''}),setBvStocks:()=>this.setState({bv:'stocks',q:''}),
+      newClient:()=>this.open({kind:'userForm',mode:'new'},{form:{}}),newStock:()=>this.open({kind:'stockForm',edit:false},{form:{ex:'B3'}}),
+      clients:clients.map((x,i)=>({...vUser(x),delay:(i*.04)+'s',on:()=>this.open({kind:'userForm',mode:'admin',id:x.id},{form:{name:x.name,email:x.email,cpf:x.cpf}})})),
+      adminStocks:s.stocks.map(sv),
+      menu:u?[
+        {d:IC.pencil,label:'Editar dados',sub:'Nome e e-mail',on:()=>this.open({kind:'userForm',mode:'self',id:u.id},{form:{name:u.name,email:u.email}})},
+        {d:IC.key,label:'Alterar PIN',sub:'Usado em saques e ordens',on:()=>this.open({kind:'changePin'},{form:{}})},
+        blocked?{d:IC.unlock,label:'Desbloquear conta',sub:reasonTxt[u.reason]||'',on:()=>this.open({kind:'locked'})}:{d:IC.lock,label:'Bloquear minha conta',sub:'Suspende saques e ordens na hora',on:()=>this.confirm({d:IC.lock,title:'Bloquear conta?',body:'Saques e ordens na bolsa ficam suspensos até você desbloquear com seu PIN. Depósitos continuam liberados.',label:'Bloquear agora',hasGo:true,cancel:'Cancelar',go:()=>{this.upd(u.id,x=>({...x,blocked:true,reason:'user'}));this.close();this.toast('Conta bloqueada')}})},
+        {d:IC.trash,label:'Encerrar conta',sub:'Exclui seus dados da Órbita',on:()=>{const hasAssets=u.balance>=.01||holdList.length>0;this.confirm(hasAssets?{d:IC.alert,title:'Ainda há saldo',body:'Para encerrar, saque '+brl(u.balance)+(holdList.length?' e venda suas '+holdList.length+' posições em ações':'')+' primeiro.',hasGo:false,cancel:'Entendi'}:{d:IC.trash,title:'Encerrar conta?',body:'Sua conta e histórico serão excluídos. Essa ação não pode ser desfeita.',label:'Encerrar definitivamente',hasGo:true,cancel:'Manter conta',go:()=>{this.setState(st=>({users:st.users.filter(x=>x.id!==u.id),session:null,screen:'login',sheet:null,form:{}}));this.toast('Conta encerrada')}})}},
+        {d:IC.logout,label:'Sair',sub:'Voltar para a tela de acesso',on:()=>{cancelAnimationFrame(this.braf);this.setState({session:null,screen:'login',form:{},mgr:false,tab:'home'})}}].map((m,i)=>({...m,delay:(i*.05)+'s'})):[],
+      sheetOpen:!!sh,close:this.close,
+      sheetAnim:s.closing?'sheetDown .26s ease-in both':'sheetUp .45s cubic-bezier(.2,.9,.25,1) both',backAnim:s.closing?'fadeOut .26s both':'fadeIn .3s both',
+      shAmount:kind==='amount',shPin:kind==='pin',shKeypad:kind==='amount'||kind==='pin',shSuccess:kind==='success',shLocked:kind==='locked',shStock:!!stS,shUser:kind==='userForm',shStockForm:kind==='stockForm',shChangePin:kind==='changePin',shConfirm:kind==='confirm',
+      am:kind==='amount'?{isDep:sh.op==='dep',kicker:sh.op==='dep'?'Entrada':'Saída · requer PIN',title:sh.op==='dep'?'Depositar':'Sacar',num:brl(amtV).replace(/^R\$\s?/,''),color:amtV>0?'var(--color-text)':'var(--color-neutral-500)',info:'Saldo '+brl(u?u.balance:0),limit:sh.op==='dep'?'Máx. R$ 50 mil':'Máx. R$ 5 mil / saque',cta:sh.op==='dep'?'Depositar '+brl(amtV):'Continuar'}:{},
+      methods:['PIX','TED','Boleto'].map(m=>({label:m,on:!!(sh&&sh.method===m),pick:()=>this.setState(st=>({sheet:{...st.sheet,method:m}}))})),
+      quick:[50,100,500,1000].map(v=>({label:'+'+v,on:()=>this.setState({amt:String(Math.round((amtV+v)*100)),err:''})})),
+      keys:(kind==='pin'?keysPin:keysAm).map(k=>({label:k,isDel:k==='del',isTxt:k!=='del',on:()=>k&&this.press(k)})),
+      pn:{title:pinT[0],kicker:pinT[1],sub:pinT[2],showAttempts:!!sh&&sh.purpose!=='manager'},
+      pinBoxes:[0,1,2,3].map(i=>({filled:i<s.pin.length,border:i===s.pin.length?'var(--color-accent)':'var(--color-divider)',bg:i<s.pin.length?'var(--color-accent-100)':'transparent'})),
+      attempts:Array.from({length:maxA},(_,i)=>({bg:i<fails?'var(--color-accent-700)':'transparent'})),
+      sc:kind==='success'?{title:sh.title,big:sh.big,lines:sh.lines.map(([k,v])=>({k,v}))}:{lines:[]},
+      lk:{why:u&&u.blocked?(u.reason==='pin'?'Detectamos '+maxA+' tentativas de PIN incorretas e bloqueamos a conta para proteger seu dinheiro.':u.reason==='admin'?'O gerente da sua conta aplicou um bloqueio preventivo.':'Você mesmo bloqueou a conta. Desbloqueie com o seu PIN quando quiser.'):'',how:u&&u.blocked&&u.reason!=='user'?'Desbloqueio pelo gerente: aba Banco → cliente → Desbloquear (código 0000).':'',canSelf:!!(u&&u.blocked&&u.reason==='user')},
+      selfUnblock:()=>this.open({kind:'pin',purpose:'unblock'}),
+      stv,setBuy:()=>this.setState(st=>({sheet:{...st.sheet,mode:'buy'},err:''})),setSell:()=>this.setState(st=>({sheet:{...st.sheet,mode:'sell'},err:''})),
+      qtyDec:()=>this.setState(st=>({qty:Math.max(1,st.qty-1),err:''})),qtyInc:()=>this.setState(st=>({qty:Math.min(9999,st.qty+1),err:''})),tradeGo:this.tradeGo,
+      amountGo:this.amountGo,
+      uf:kind==='userForm'?{isNew:sh.mode==='new',isAdmin:sh.mode==='admin',showCpf:sh.mode!=='self',kicker:sh.mode==='self'?'Perfil':'Backoffice · cliente',title:sh.mode==='new'?'Novo cliente':sh.mode==='self'?'Editar dados':(tu?tu.name:''),cta:sh.mode==='new'?'Cadastrar cliente':'Salvar alterações',
+        bal:tu?brl(tu.balance):'',assets:tu?Object.keys(tu.holdings||{}).length+' ações':'',status:tu?(tu.blocked?'Bloqueada':'Ativa'):'',
+        blockLabel:tu&&tu.blocked?'Desbloquear':'Bloquear',blockIcon:tu&&tu.blocked?IC.unlock:IC.lock,
+        toggleBlock:()=>{if(!tu)return;this.upd(tu.id,x=>({...x,blocked:!x.blocked,reason:x.blocked?null:'admin',fails:0}));this.toast(tu.blocked?tu.name.split(' ')[0]+' desbloqueada(o)':tu.name.split(' ')[0]+' bloqueada(o)')},
+        del:()=>{if(!tu)return;this.confirm({d:IC.trash,title:'Excluir '+tu.name.split(' ')[0]+'?',body:'O cliente, saldo de '+brl(tu.balance)+' e todo o histórico serão removidos do banco.',label:'Excluir cliente',hasGo:true,cancel:'Cancelar',go:()=>{const self=tu.id===s.session;this.setState(st=>({users:st.users.filter(x=>x.id!==tu.id),sheet:null,...(self?{session:null,screen:'login',mgr:false}:{})}));this.toast('Cliente excluído')}})}}:{},
+      saveUser:this.saveUser,savePin:this.savePin,saveStock:this.saveStock,
+      sf:kind==='stockForm'?{isEdit:!!sh.edit,title:sh.edit?'Editar '+s.form.ticker:'Cadastrar ação',cta:sh.edit?'Salvar ação':'Listar na bolsa',cur:(EXM[s.form.ex||'B3']||EX[0]).cur,
+        exPick:EX.map(e=>{const on=(s.form.ex||'B3')===e.code;return {code:e.code,bg:on?'var(--color-accent)':'var(--color-bg)',color:on?'var(--color-bg)':'var(--color-text)',on:()=>this.setState(st=>({form:{...st.form,ex:e.code}}))}})}:{exPick:[]},
+      delStock:()=>{const t=s.form.ticker;this.confirm({d:IC.trash,title:'Remover '+t+'?',body:'A ação sai do mercado e do globo. Posições de clientes deixam de ser exibidas.',label:'Remover ação',hasGo:true,cancel:'Cancelar',go:()=>{this.setState(st=>({stocks:st.stocks.filter(x=>x.ticker!==t)}));this.close();this.toast(t+' removida')}})},
+      cf:{d:cf.d||IC.alert,title:cf.title||'',body:cf.body||'',label:cf.label||'',hasGo:!!cf.hasGo,cancel:cf.cancel||'Cancelar',go:cf.go||(()=>{})}
+    };
+  }
+}
+</script>
+</body>
+</html>
